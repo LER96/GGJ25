@@ -41,11 +41,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] MMF_Player _jumpFeedBack;
     [SerializeField] MMF_Player _runFeedBack;
     [SerializeField] MMF_Player _idleFeedBack;
-
-    [Header("Delay")]
-    [SerializeField] float _delayMovement;
-
-    PlayerHanlder _playerHandler;
+    
+    private float _delayMovement;
+    private PlayerHanlder _playerHandler;
 
     private int _currentJumps;
     private float _currentTime;
@@ -59,7 +57,11 @@ public class PlayerMovement : MonoBehaviour
     private bool _jump;
     private bool _isGrounded;
 
+    private bool _moveDelay;
     private bool _canMove;
+
+    public bool CanMove { get=> _canMove; set=> _canMove = value; }
+    public float StopMovementTimer { get=> _delayMovement; set=> _delayMovement = value; }
 
     private void Start()
     {
@@ -71,13 +73,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (_canMove == false)
+        if (_moveDelay == false)
             DisableMovementTimer();
     }
 
     private void FixedUpdate()
     {
-        Move();
+        if (_canMove)
+            Move();
     }
 
     private void Move()
@@ -205,7 +208,7 @@ public class PlayerMovement : MonoBehaviour
         if (_currentDiableTime >= _delayMovement)
         {
             _currentDiableTime = 0;
-            _canMove = true;
+            _moveDelay = true;
         }
     }    
 
@@ -222,12 +225,12 @@ public class PlayerMovement : MonoBehaviour
 
     void DelayMovement()
     {
-        _canMove = false;
+        _moveDelay = false;
     }
 
     void OnMove(InputValue input)
     {
-        if (_canMove)
+        if (_moveDelay)
         {
             _movementInput = input.Get<Vector2>();
             _runFeedBack.PlayFeedbacks();

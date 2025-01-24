@@ -1,31 +1,43 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    [System.Serializable]
+    public class SpawnPos
+    {
+        public Transform _spot;
+        public bool _isoccupied;
+    }
     private static LevelManager _instance;
+    public static event Action OnDeath;
     public static LevelManager Instance => _instance;
 
     [SerializeField] private List<PlayerHanlder> _players;
+    [SerializeField] private List<SpawnPos> _startPos;
+    [SerializeField] private List<Transform> _weaponsSpots;
+    [SerializeField] private List<Weapon> _weapons;
+
     [SerializeField] private CinemachineTargetGroup _targetGroup;
-
-
     [SerializeField] private int _targetPlayerAmount = 2;
 
     [Header("Round Rules")]
     [SerializeField] float _roundLength = 180f;
 
-    float _currentTime = 0f;
-    bool _gameStart = false;
-    bool _roundStart = false;
-    bool _roundTimerEnded = false;
+    private float _currentTime = 0f;
+    private bool _gameStart = false;
+    private bool _roundStart = false;
+    private bool _roundTimerEnded = false;
 
     private void Awake()
     {
         if (_instance == null)
             _instance = this;
+
+        OnDeath += EndRound;
     }
 
     private void Update()
@@ -62,10 +74,32 @@ public class LevelManager : MonoBehaviour
     public void AddPlayer(PlayerHanlder player)
     {
         _players.Add(player);
+        SetSpot(player);
         _targetGroup.AddMember(player.transform, 1, 1);
         if (AllPlayersConnected())
         {
             StartGame();
+        }
+    }
+
+    void SetSpot(PlayerHanlder player)
+    {
+        for (int i = 0; i < _startPos.Count; i++)
+        {
+            if (_startPos[i]._isoccupied == false)
+            {
+                player.transform.position = _startPos[i]._spot.position;
+                _startPos[i]._isoccupied = true;
+            }
+        }
+    }
+
+    private void ResetSpot()
+    {
+        for (int i = 0; i < _startPos.Count; i++)
+        {
+            _startPos[i]._isoccupied = false;
+            _startPos[i]._spot = null;
         }
     }
 
@@ -77,12 +111,33 @@ public class LevelManager : MonoBehaviour
     public void StartGame()
     {
         _gameStart = true;
+        SpawnWeapons();
         UIManager.Instance.StartGameCountdownCoroutine();
+    }
+
+    void SpawnWeapons()
+    {
+        for (int i = 0; i < _weapons.Count; i++)
+        {
+            Weapon weapon= Instantiate(_weapons[i], _weaponsSpots[i]);
+            StartCoroutine(Camera(weapon));
+        }
+    }
+
+    IEnumerator Camera(Weapon weapon)
+    {
+        AddToCameraTargetGroup(weapon.transform);
+        yield return new WaitForSeconds(3);
+        RemoveFromCameraTargetGroup(weapon.transform);
     }
 
     public void StartRound()
     {
         _roundStart = true;
+        for (int i = 0; i < _players.Count; i++)
+        {
+            _players[i].StartRound();
+        }
     }
 
     public void EndRound()
@@ -109,9 +164,9 @@ public class LevelManager : MonoBehaviour
 
     public void ResetRound()
     {
-        
+        ResetSpot();
         //remove all weapons
-        
+
     }
 
     public void CheckRoundTimerEnded()

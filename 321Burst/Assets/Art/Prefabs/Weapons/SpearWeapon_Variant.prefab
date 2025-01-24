@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7211551446458699025}
   m_Layer: 0
   m_Name: Spear
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -131,7 +131,7 @@ BoxCollider2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3935882973819543956}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Density: 1
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -1761,14 +1761,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4023bec53b571b4c8ea64557d76aeec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _movingSpeed: 0
+  _weaponName: spear
+  _movingSpeed: 5
   _attackFeedback: {fileID: 0}
   _hitFeedback: {fileID: 8394050558442020793}
   _pickUpFeedBack: {fileID: 6109464662870853422}
   _pos: {fileID: 5214815830906112194}
   _spearCollider: {fileID: 7211551446458699025}
   _attackDuration: 0.3
-  _colliderDuration: 0.1
+  _waitDuration: 0
 --- !u!114 &6109464662870853422 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7825355380161106993, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}

@@ -12,10 +12,11 @@ public class WeaponHandler : MonoBehaviour
     [SerializeField] Transform _holder;
 
     private bool _pick;
-    private bool _attack;
+    private bool _attackPress;
+    private bool _canAttack;
     private Vector2 _weaponOffset;
 
-
+    public bool CanAttack { get => _canAttack; set => _canAttack = value; }
     public Transform Holder=> _holder;
 
     public Weapon GetWeapon()
@@ -48,12 +49,14 @@ public class WeaponHandler : MonoBehaviour
 
     void OnFire(InputValue input)
     {
-        if (input.isPressed && _attack == false)
+        if (_canAttack)
         {
-            AttackEvent?.Invoke();
+            if (input.isPressed && _attackPress == false)
+            {
+                AttackEvent?.Invoke();
+            }
+            _attackPress = input.isPressed;
         }
-
-        _attack = input.isPressed;
     }
 
 

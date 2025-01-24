@@ -143,6 +143,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1951665621591787191, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
   m_PrefabInstance: {fileID: 1983016492695649942}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1420991046268827171 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 593711186508269749, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+  m_PrefabInstance: {fileID: 1983016492695649942}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da43522623d4704e979466dc7650b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1958193986321686128 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 47835285817385190, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
@@ -160,9 +171,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f68333a639c98143b339fab017faeb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HP: 0
-  _weaponHandler: {fileID: 0}
-  _playerMovement: {fileID: 0}
+  _hp: 0
+  _weaponHandler: {fileID: 5625427512297306575}
+  _playerMovement: {fileID: 5968552565649565595}
+  _deathFeedBack: {fileID: 1420991046268827171}
 --- !u!114 &5625427512297306575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -227,6 +239,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6da43522623d4704e979466dc7650b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5968552565649565595 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5283171040222288141, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+  m_PrefabInstance: {fileID: 1983016492695649942}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1958193986321686128}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bdad297f14265f34cae6753aabfb75c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6946121287628241381 stripped
