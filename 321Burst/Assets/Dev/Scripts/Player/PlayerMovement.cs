@@ -38,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _moveDir;
 
     private bool _canAirDodge;
-    private bool _isAir;
+    [SerializeField] private bool _isGrounded;
 
     private void Start()
     {
@@ -118,10 +118,10 @@ public class PlayerMovement : MonoBehaviour
     {
         Collider2D collider= Physics2D.OverlapCircle(_checkFloor.transform.position, _radius, _groundLayer);
         if (collider != null)
-            _isAir = false;
+            _isGrounded = true;
         else
-            _isAir = true;
+            _isGrounded = false;
 
-        return _isAir;
+        return _isGrounded;
     }
 }
