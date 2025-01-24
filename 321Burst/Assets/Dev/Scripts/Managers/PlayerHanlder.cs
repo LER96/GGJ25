@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,27 +7,21 @@ using UnityEngine.InputSystem;
 
 public class PlayerHanlder : MonoBehaviour
 {
+    public event Action JumpEvent;
 
-    public Action JumpEvent;
-    public Action AttackEvent;
-
-    [SerializeField] int HP;
-
-    private Vector2 _movementInput;
+    [SerializeField] int _hp;
+    [SerializeField] WeaponHandler _weaponHandler;
+    [SerializeField] PlayerMovement _playerMovement;
     private bool _jump;
-    private bool _attack;
-    private bool _pick;
-    public Vector2 MovmentInput => _movementInput;
 
+    public int HP => _hp;
 
-    void OnFire(InputValue input)
+    public WeaponHandler WeaponHandler=> _weaponHandler;
+    public PlayerMovement PlayerMovement => _playerMovement;
+
+    private void Start()
     {
-        if (input.isPressed && _attack == false)
-        {
-            AttackEvent?.Invoke();
-        }
-
-        _attack = input.isPressed;
+        //LevelManager.Instance.AddPlayer(this);
     }
 
     void OnJump(InputValue input)
