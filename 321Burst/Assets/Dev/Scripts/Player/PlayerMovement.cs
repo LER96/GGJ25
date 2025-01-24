@@ -8,19 +8,28 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] Rigidbody2D _playerBody;
 
     [Header("Movment Variables")]
+    [Header("Run")]
     [SerializeField] float _maxSpeed;
     [SerializeField] float _runForce;
+    [Header("Jump")]
     [SerializeField] float _jumpForce;
     [SerializeField] float _jumpTimer;
 
     [Header("FallForce")]
     [SerializeField] float _fallForce;
 
+    private bool _jumpInput;
+    private Vector2 _movementInput;
+    private Vector2 _moveDir;
+
     private bool _canAirDodge;
     private bool _isJumping;
     private float _currentTime;
-    [SerializeField] private Vector2 _movementInput;
-    private Vector2 _moveDir;
+
+    private void Start()
+    {
+        InputManager.JumpEvent += Jump;
+    }
 
     private void Update()
     {
@@ -32,8 +41,6 @@ public class PlayerMovement : MonoBehaviour
     private void Move()
     {
         _moveDir.x = _movementInput.x * _runForce;
-        _moveDir.y = _movementInput.y * _jumpForce;
-
         _playerBody.AddForce(_moveDir);
 
         if (_playerBody.velocity.x >= _maxSpeed)
@@ -41,6 +48,11 @@ public class PlayerMovement : MonoBehaviour
             _playerBody.velocity = new Vector2(_maxSpeed, _playerBody.velocity.y);
         }
 
+    }
+
+    void Jump()
+    {
+            _playerBody.AddForce(Vector2.up* _jumpForce, ForceMode2D.Impulse);
     }
 
     void AirTimer()
