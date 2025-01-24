@@ -309,10 +309,9 @@ MonoBehaviour:
   _playerBody: {fileID: 523724855}
   _maxSpeed: 7
   _runForce: 2
-  _jumpForce: 2
+  _jumpForce: 4
   _jumpTimer: 1
   _fallForce: 3
-  _movementInput: {x: 0, y: 0}
 --- !u!61 &523724854
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -735,6 +734,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f64da89b793ed584fb4f43a4dca2a224, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _jump: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

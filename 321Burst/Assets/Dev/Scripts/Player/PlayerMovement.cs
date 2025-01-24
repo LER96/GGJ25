@@ -11,20 +11,28 @@ public class PlayerMovement : MonoBehaviour
     [Header("Run")]
     [SerializeField] float _maxSpeed;
     [SerializeField] float _runForce;
+
     [Header("Jump")]
+    [SerializeField] int _numOfjumps;
     [SerializeField] float _jumpForce;
-    [SerializeField] float _jumpTimer;
 
     [Header("FallForce")]
-    [SerializeField] float _fallForce;
+    [SerializeField] float _dogeGravity;
+    [SerializeField] float _fastFallStartTimer;
 
-    private bool _jumpInput;
+    [Header("Gravity")]
+    [SerializeField] float _normalGravity;
+    [SerializeField] float _fallGravity;
+
+
+    private int _currentJumps;
+    private float _currentTime;
+
     private Vector2 _movementInput;
     private Vector2 _moveDir;
 
     private bool _canAirDodge;
-    private bool _isJumping;
-    private float _currentTime;
+    private bool _isAir;
 
     private void Start()
     {
@@ -35,10 +43,26 @@ public class PlayerMovement : MonoBehaviour
     {
         _movementInput = InputManager.Instance.MovmentInput;
         Move();
+        SetGravirty();
     }
 
 
     private void Move()
+    {
+        Run();
+        IsGrounded();
+    }
+
+    void Jump()
+    {
+        if (_currentJumps < _numOfjumps)
+        {
+            _currentJumps++;
+            _playerBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+        }
+    }
+
+    void Run()
     {
         _moveDir.x = _movementInput.x * _runForce;
         _playerBody.AddForce(_moveDir);
@@ -47,21 +71,28 @@ public class PlayerMovement : MonoBehaviour
         {
             _playerBody.velocity = new Vector2(_maxSpeed, _playerBody.velocity.y);
         }
-
     }
 
-    void Jump()
+    void SetGravirty()
     {
-            _playerBody.AddForce(Vector2.up* _jumpForce, ForceMode2D.Impulse);
+        if (_playerBody.velocity.y < 0)
+            _playerBody.gravityScale = _fallGravity;
+        else
+            _playerBody.gravityScale = _normalGravity;
     }
 
     void AirTimer()
     {
         _currentTime += Time.deltaTime;
-        if (_currentTime >= _jumpTimer)
+        if (_currentTime >= _fastFallStartTimer)
         {
             _currentTime = 0;
             _canAirDodge = true;
         }
+    }
+
+    void IsGrounded()
+    {
+
     }
 }
