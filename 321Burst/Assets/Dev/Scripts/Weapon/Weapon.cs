@@ -7,6 +7,8 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] MMF_Player _attackFeedback;
     [SerializeField] MMF_Player _hitFeedback;
+    [SerializeField] MMF_Player _pickUpFeedBack;
+    [SerializeField] MMF_Player _dropFeedBack;
     [SerializeField] Vector2 _weaponOffset;
 
     public Vector2 WeaponOffset => _weaponOffset;
@@ -43,36 +45,40 @@ public class Weapon : MonoBehaviour
             if (_weaponHandler != null)
             {
                 Pick();
+                _pickUpFeedBack.PlayFeedbacks();
             }
         }
         else if(_isPicked) 
         {
             Drop();
+            _dropFeedBack.PlayFeedbacks();
         }
     }
 
     void Pick()
     {
-        _weaponHandler.SetWeapon(this);
         transform.SetParent(_weaponHandler.Holder);
         transform.localPosition = Vector3.zero;
+        _weaponHandler.SetWeapon(this);
         _isPicked = true;
+        _pickUpFeedBack.PlayFeedbacks();
     }
 
     void Drop()
     {
-        transform.SetParent(null);
         _weaponHandler.DisableWeapon();
+        transform.SetParent(null);
         _weaponHandler = null;
+        _isPicked=false;
     }
 
     public void Attack()
     {
-
+        _attackFeedback.PlayFeedbacks();
     }
 
     public void HitFeedBack()
     {
-
+        _hitFeedback.PlayFeedbacks();
     }
 }

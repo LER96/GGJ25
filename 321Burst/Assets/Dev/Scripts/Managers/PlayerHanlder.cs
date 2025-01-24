@@ -18,11 +18,6 @@ public class PlayerHanlder : MonoBehaviour
     private bool _pick;
     public Vector2 MovmentInput => _movementInput;
 
-    private void Start()
-    {
-        
-    }
-
 
     void OnFire(InputValue input)
     {

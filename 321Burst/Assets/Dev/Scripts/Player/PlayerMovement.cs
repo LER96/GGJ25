@@ -59,9 +59,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         Move();
-        Debug.Log("player X vel: " + _playerBody.velocity.x + "\nplayer Y vel: " + _playerBody.velocity.y);
     }
 
     private void Move()
