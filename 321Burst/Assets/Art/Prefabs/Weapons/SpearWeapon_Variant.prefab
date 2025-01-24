@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7211551446458699025}
   m_Layer: 0
   m_Name: Spear
-  m_TagString: Untagged
+  m_TagString: Weapon
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1756,7 +1756,7 @@ MonoBehaviour:
   _pos: {fileID: 5214815830906112194}
   _spearCollider: {fileID: 7211551446458699025}
   _attackDuration: 0.3
-  _colliderDuration: 0.1
+  _waitDuration: 0
 --- !u!114 &6109464662870853422 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7825355380161106993, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
