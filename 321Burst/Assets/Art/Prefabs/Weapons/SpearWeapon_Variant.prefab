@@ -424,6 +424,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7043083709635749605, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
+      propertyPath: managedReferences[642373729755070465].BoundParticleSystem
+      value: 
+      objectReference: {fileID: 8293287242633678938}
     - target: {fileID: 8524744228166185366, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: m_Name
       value: SpearWeapon_Variant
