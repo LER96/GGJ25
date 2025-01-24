@@ -1,5 +1,4 @@
 using Cinemachine;
-using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -85,6 +84,22 @@ public class LevelManager : MonoBehaviour
     public void StartRound()
     {
         _roundStart = true;
+    }
+
+    public void EndRound()
+    {
+        _roundStart = false;
+        //check player HP
+        //if player hp = 0 then win screen
+        //if player hp > 0 
+        //reset round.
+    }
+
+    public void ResetRouund()
+    {
+        //place players in start location
+        //remove all weapons
+        
     }
 
     public void CheckRoundTimerEnded()
