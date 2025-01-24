@@ -41,11 +41,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] MMF_Player _jumpFeedBack;
     [SerializeField] MMF_Player _runFeedBack;
     [SerializeField] MMF_Player _idleFeedBack;
-
-    [Header("Delay")]
-    [SerializeField] float _delayMovement;
-
-    PlayerHanlder _playerHandler;
+    
+    private float _delayMovement;
+    private PlayerHanlder _playerHandler;
 
     private int _currentJumps;
     private float _currentTime;
@@ -60,6 +58,8 @@ public class PlayerMovement : MonoBehaviour
     private bool _isGrounded;
 
     private bool _canMove;
+
+    public float StopMovementTimer { get=> _delayMovement; set=> _delayMovement = value; }
 
     private void Start()
     {
