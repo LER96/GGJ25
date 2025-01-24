@@ -78,7 +78,8 @@ public class LevelManager : MonoBehaviour
     public void StartGame()
     {
         _gameStart = true;
-        UIManager.Instance.StartGameCountdownCoroutine();
+        
+        //UIManager.Instance.StartGameCountdownCoroutine();
     }
 
     public void StartRound()
