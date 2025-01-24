@@ -12,6 +12,7 @@ public class PlayerHanlder : MonoBehaviour
     [SerializeField] int _hp;
     [SerializeField] WeaponHandler _weaponHandler;
     [SerializeField] PlayerMovement _playerMovement;
+    [SerializeField] MMF_Player _deathFeedBack;
     private bool _jump;
 
     public int HP => _hp;
@@ -24,6 +25,12 @@ public class PlayerHanlder : MonoBehaviour
         LevelManager.Instance.AddPlayer(this);
     }
 
+    public void StartRound()
+    {
+        _weaponHandler.CanAttack = true;
+        _playerMovement.CanMove = true;
+    }
+
     void OnJump(InputValue input)
     {
         if (input.isPressed && _jump == false)
@@ -33,5 +40,15 @@ public class PlayerHanlder : MonoBehaviour
 
         _jump = input.isPressed;
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if(collision.CompareTag("Weapon"))
+        {
+            _deathFeedBack.PlayFeedbacks();
+            _hp--;
+        }
+    }
+
 
 }
