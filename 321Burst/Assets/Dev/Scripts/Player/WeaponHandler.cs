@@ -7,11 +7,14 @@ using UnityEngine.InputSystem;
 public class WeaponHandler : MonoBehaviour
 {
     public event Action OnPick;
+    public event Action AttackEvent;
     [SerializeField] Weapon _currentWeapon;
     [SerializeField] Transform _holder;
 
     private bool _pick;
+    private bool _attack;
     private Vector2 _weaponOffset;
+
 
     public Transform Holder=> _holder;
 
@@ -23,8 +26,7 @@ public class WeaponHandler : MonoBehaviour
     public void SetWeapon(Weapon weapon)
     {
         _currentWeapon = weapon;
-        _weaponOffset = weapon.WeaponOffset;
-        _holder.localPosition = new Vector3(_weaponOffset.x, _weaponOffset.y, 0);
+
     }
 
     public void DisableWeapon()
@@ -42,6 +44,16 @@ public class WeaponHandler : MonoBehaviour
         }
 
         _pick = input.isPressed;
+    }
+
+    void OnFire(InputValue input)
+    {
+        if (input.isPressed && _attack == false)
+        {
+            AttackEvent?.Invoke();
+        }
+
+        _attack = input.isPressed;
     }
 
 

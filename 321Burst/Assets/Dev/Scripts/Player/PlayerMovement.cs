@@ -37,24 +37,42 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float _radius;
     [SerializeField] LayerMask _groundLayer;
 
+    [Header("Effects")]
+    [SerializeField] MMF_Player _jumpFeedBack;
+    [SerializeField] MMF_Player _runFeedBack;
+    [SerializeField] MMF_Player _idleFeedBack;
+
+    [Header("Delay")]
+    [SerializeField] float _delayMovement;
 
     PlayerHanlder _playerHandler;
 
     private int _currentJumps;
     private float _currentTime;
+    private float _currentDiableTime;
 
     private Vector2 _movementInput;
     private Vector2 _moveDir;
+    private Vector3 _scale;
 
     private bool _canFastFall;
     private bool _jump;
     private bool _isGrounded;
 
+    private bool _canMove;
+
     private void Start()
     {
         _playerHandler = GetComponent<PlayerHanlder>();
-        
+        _scale = transform.localScale;
         _playerHandler.JumpEvent += Jump;
+        _playerHandler.WeaponHandler.AttackEvent += DelayMovement;
+    }
+
+    private void Update()
+    {
+        if (_canMove == false)
+            DisableMovementTimer();
     }
 
     private void FixedUpdate()
@@ -70,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
             _currentJumps = 0;
             _canFastFall = false;
             Run();
-            if (_movementInput.x == 0 || _movementInput.x * _playerBody.velocity.x < 0)
+            if (_movementInput.x == 0)
             {
                 GroundDeccelerate();
             }
@@ -123,6 +141,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
+        if(_isGrounded)
+            _jumpFeedBack.PlayFeedbacks();
         if (_currentJumps < _numOfjumps)
         {
             _currentJumps++;
@@ -134,10 +154,12 @@ public class PlayerMovement : MonoBehaviour
 
     void GroundDeccelerate()
     {
-        if (_playerBody.velocity.x > 0)
+        if (_playerBody.velocity.x > 0.1f)
             _playerBody.AddForce(Vector2.left * _groundDecceleration);
-        else if (_playerBody.velocity.x < 0)
+        else if (_playerBody.velocity.x < -0.1f)
             _playerBody.AddForce(Vector2.right * _groundDecceleration);
+        else
+            _playerBody.velocity = Vector2.zero;
     }
 
     void AirDeccelerate()
@@ -177,6 +199,16 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void DisableMovementTimer()
+    {
+        _currentDiableTime += Time.deltaTime;
+        if (_currentDiableTime >= _delayMovement)
+        {
+            _currentDiableTime = 0;
+            _canMove = true;
+        }
+    }    
+
     bool IsGrounded()
     {
         Collider2D collider = Physics2D.OverlapCircle(_checkFloor.transform.position, _radius, _groundLayer);
@@ -188,9 +220,24 @@ public class PlayerMovement : MonoBehaviour
         return _isGrounded;
     }
 
+    void DelayMovement()
+    {
+        _canMove = false;
+    }
+
     void OnMove(InputValue input)
     {
-        _movementInput = input.Get<Vector2>();
+        if (_canMove)
+        {
+            _movementInput = input.Get<Vector2>();
+            _runFeedBack.PlayFeedbacks();
+            if (_movementInput.x < 0)
+                transform.localScale = new Vector3(-_scale.x, _scale.y, _scale.z);
+            else if (_movementInput.x > 0)
+                transform.localScale = new Vector3(_scale.x, _scale.y, _scale.z);
+            else
+                _idleFeedBack.PlayFeedbacks();
+        }
     }
 
 }
