@@ -53,17 +53,18 @@ public class Weapon : MonoBehaviour
 
     void Pick()
     {
-        _weaponHandler.SetWeapon(this);
         transform.SetParent(_weaponHandler.Holder);
         transform.localPosition = Vector3.zero;
+        _weaponHandler.SetWeapon(this);
         _isPicked = true;
     }
 
     void Drop()
     {
-        transform.SetParent(null);
         _weaponHandler.DisableWeapon();
+        transform.SetParent(null);
         _weaponHandler = null;
+        _isPicked=false;
     }
 
     public void Attack()
