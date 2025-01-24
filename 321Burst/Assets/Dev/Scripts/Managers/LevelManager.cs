@@ -119,8 +119,16 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < _weapons.Count; i++)
         {
-            Instantiate(_weapons[i], _weaponsSpots[i]);
+            Weapon weapon= Instantiate(_weapons[i], _weaponsSpots[i]);
+            StartCoroutine(Camera(weapon));
         }
+    }
+
+    IEnumerator Camera(Weapon weapon)
+    {
+        AddToCameraTargetGroup(weapon.transform);
+        yield return new WaitForSeconds(3);
+        RemoveFromCameraTargetGroup(weapon.transform);
     }
 
     public void StartRound()
