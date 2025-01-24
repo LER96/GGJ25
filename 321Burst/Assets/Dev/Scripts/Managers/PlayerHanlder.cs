@@ -16,7 +16,7 @@ public class PlayerHanlder : MonoBehaviour
 
     private void Start()
     {
-        LevelManager.Instance.AddPlayer(this);
+        //LevelManager.Instance.AddPlayer(this);
     }
 
     void OnJump(InputValue input)
