@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 5283171040222288141}
   - component: {fileID: 2340368285829695777}
   - component: {fileID: 2678661219358915958}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Character_V1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -68,7 +68,6 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
-  _isGrounded: 0
 --- !u!50 &2340368285829695777
 Rigidbody2D:
   serializedVersion: 4
@@ -128,7 +127,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.029510975, y: -0.3962922}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -139,7 +138,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.5, y: 2.2}
+  m_Size: {x: 1.440978, y: 2.2168632}
   m_EdgeRadius: 0
 --- !u!1 &2327025721359889849
 GameObject:
@@ -151,7 +150,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4690099277449263656}
   - component: {fileID: 7750816234500045114}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -235,7 +234,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6628228009668918637}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: CheckFloor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -266,7 +265,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1951665621591787191}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: WeaponHolder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -299,6 +298,14 @@ PrefabInstance:
     - target: {fileID: 1685536771143834236, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 1685536771143834236, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 2511944118089327523, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6224330537606774276, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
       propertyPath: m_LocalPosition.x
