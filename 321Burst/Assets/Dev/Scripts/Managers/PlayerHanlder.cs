@@ -9,10 +9,12 @@ public class PlayerHanlder : MonoBehaviour
 {
     public event Action JumpEvent;
 
-    [SerializeField] int HP;
+    [SerializeField] int _hp;
     [SerializeField] WeaponHandler _weaponHandler;
     [SerializeField] PlayerMovement _playerMovement;
     private bool _jump;
+
+    public int HP => _hp;
 
     public WeaponHandler WeaponHandler=> _weaponHandler;
     public PlayerMovement PlayerMovement => _playerMovement;

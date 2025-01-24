@@ -20,6 +20,13 @@ public class UIManager : MonoBehaviour
         _instance = this;
     }
 
+    public void EnableWinScreen(int player)
+    {
+        //turn on UI
+        //if player 1 then write 1
+        //if player 2 then write 2
+    }
+
     public void StartGameCountdownCoroutine()
     {
         StartCoroutine(StartGameCountdown());

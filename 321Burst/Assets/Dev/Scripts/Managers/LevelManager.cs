@@ -88,15 +88,28 @@ public class LevelManager : MonoBehaviour
     public void EndRound()
     {
         _roundStart = false;
-        //check player HP
-        //if player hp = 0 then win screen
-        //if player hp > 0 
+        for(int i = 0; i < _players.Count; i++)
+        {
+            if (_players[i].HP == 0)
+            {
+                EndGame(i+1);
+                return;
+            }
+        }
+
+        ResetRound();
         //reset round.
     }
 
-    public void ResetRouund()
+    public void EndGame(int winningPlayer)
     {
-        //place players in start location
+        //turn on winner UI
+        UIManager.Instance.EnableWinScreen(winningPlayer);
+    }
+
+    public void ResetRound()
+    {
+        
         //remove all weapons
         
     }
