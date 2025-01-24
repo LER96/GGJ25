@@ -14,6 +14,9 @@ public class PlayerHanlder : MonoBehaviour
     [SerializeField] PlayerMovement _playerMovement;
     private bool _jump;
 
+    public WeaponHandler WeaponHandler=> _weaponHandler;
+    public PlayerMovement PlayerMovement => _playerMovement;
+
     private void Start()
     {
         //LevelManager.Instance.AddPlayer(this);

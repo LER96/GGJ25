@@ -39,6 +39,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Effects")]
     [SerializeField] MMF_Player _jumpFeedBack;
+    [SerializeField] MMF_Player _runFeedBack;
+    [SerializeField] MMF_Player _idleFeedBack;
 
     [Header("Delay")]
     [SerializeField] float _delayMovement;
@@ -64,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         _playerHandler = GetComponent<PlayerHanlder>();
         _scale = transform.localScale;
         _playerHandler.JumpEvent += Jump;
+        _playerHandler.WeaponHandler.AttackEvent += DelayMovement;
     }
 
     private void Update()
@@ -85,7 +88,7 @@ public class PlayerMovement : MonoBehaviour
             _currentJumps = 0;
             _canFastFall = false;
             Run();
-            if (_movementInput.x == 0 || _movementInput.x * _playerBody.velocity.x < 0)
+            if (_movementInput.x == 0)
             {
                 GroundDeccelerate();
             }
@@ -151,10 +154,12 @@ public class PlayerMovement : MonoBehaviour
 
     void GroundDeccelerate()
     {
-        if (_playerBody.velocity.x > 0)
+        if (_playerBody.velocity.x > 0.1f)
             _playerBody.AddForce(Vector2.left * _groundDecceleration);
-        else if (_playerBody.velocity.x < 0)
+        else if (_playerBody.velocity.x < -0.1f)
             _playerBody.AddForce(Vector2.right * _groundDecceleration);
+        else
+            _playerBody.velocity = Vector2.zero;
     }
 
     void AirDeccelerate()
@@ -196,7 +201,7 @@ public class PlayerMovement : MonoBehaviour
 
     void DisableMovementTimer()
     {
-        _currentDiableTime+=Time.deltaTime;
+        _currentDiableTime += Time.deltaTime;
         if (_currentDiableTime >= _delayMovement)
         {
             _currentDiableTime = 0;
@@ -225,10 +230,13 @@ public class PlayerMovement : MonoBehaviour
         if (_canMove)
         {
             _movementInput = input.Get<Vector2>();
+            _runFeedBack.PlayFeedbacks();
             if (_movementInput.x < 0)
                 transform.localScale = new Vector3(-_scale.x, _scale.y, _scale.z);
             else if (_movementInput.x > 0)
                 transform.localScale = new Vector3(_scale.x, _scale.y, _scale.z);
+            else
+                _idleFeedBack.PlayFeedbacks();
         }
     }
 
