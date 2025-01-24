@@ -5,21 +5,29 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] float _movingSpeed;
     [SerializeField] MMF_Player _attackFeedback;
     [SerializeField] MMF_Player _hitFeedback;
     [SerializeField] MMF_Player _pickUpFeedBack;
-    [SerializeField] MMF_Player _dropFeedBack;
-    [SerializeField] Vector2 _weaponOffset;
-
-    public Vector2 WeaponOffset => _weaponOffset;
 
     private WeaponHandler _weaponHandler;
     private Collider2D _target;
     private bool _isPicked;
 
+    private void Update()
+    {
+        if (_weaponHandler != null && _isPicked)
+        {
+            Vector3 scale = _weaponHandler.Holder.localScale;
+            Vector3 localScale = transform.localScale;
+            transform.position = Vector3.Slerp(transform.position, _weaponHandler.Holder.position, _movingSpeed * Time.deltaTime);
+            transform.localScale = new Vector3(localScale.x * scale.x, localScale.y, localScale.z);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
+        if(collision.CompareTag("Player") && _isPicked == false)
         {
             _weaponHandler = collision.GetComponent<WeaponHandler>();
             _target = collision;
@@ -51,23 +59,22 @@ public class Weapon : MonoBehaviour
         else if(_isPicked) 
         {
             Drop();
-            _dropFeedBack.PlayFeedbacks();
         }
     }
 
     void Pick()
     {
-        transform.SetParent(_weaponHandler.Holder);
-        transform.localPosition = Vector3.zero;
         _weaponHandler.SetWeapon(this);
         _isPicked = true;
         _pickUpFeedBack.PlayFeedbacks();
+        _weaponHandler.AttackEvent += Attack;
     }
 
     void Drop()
     {
         _weaponHandler.DisableWeapon();
         transform.SetParent(null);
+        _weaponHandler.AttackEvent -= Attack;
         _weaponHandler = null;
         _isPicked=false;
     }

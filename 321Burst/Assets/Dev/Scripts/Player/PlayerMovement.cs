@@ -45,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 _movementInput;
     private Vector2 _moveDir;
+    private Vector3 _scale;
 
     private bool _canFastFall;
     private bool _jump;
@@ -53,7 +54,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         _playerHandler = GetComponent<PlayerHanlder>();
-        
+        _scale = transform.localScale;
         _playerHandler.JumpEvent += Jump;
     }
 
@@ -191,6 +192,10 @@ public class PlayerMovement : MonoBehaviour
     void OnMove(InputValue input)
     {
         _movementInput = input.Get<Vector2>();
+        if(_movementInput.x <0)
+            transform.localScale= new Vector3(-_scale.x,_scale.y,_scale.z);
+        else if(_movementInput.x > 0)
+            transform.localScale = new Vector3(_scale.x, _scale.y, _scale.z);
     }
 
 }

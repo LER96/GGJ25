@@ -6,9 +6,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerHanlder : MonoBehaviour
 {
-
-    public Action JumpEvent;
-    public Action AttackEvent;
+    public event Action JumpEvent;
 
     [SerializeField] int HP;
 
@@ -16,18 +14,6 @@ public class PlayerHanlder : MonoBehaviour
     private bool _jump;
     private bool _attack;
     private bool _pick;
-    public Vector2 MovmentInput => _movementInput;
-
-
-    void OnFire(InputValue input)
-    {
-        if (input.isPressed && _attack == false)
-        {
-            AttackEvent?.Invoke();
-        }
-
-        _attack = input.isPressed;
-    }
 
     void OnJump(InputValue input)
     {

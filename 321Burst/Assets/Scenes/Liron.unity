@@ -423,6 +423,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3321861769989238243, guid: 2d4fbfbbccc0cc54eb78b39fa6d6d810, type: 3}
+      propertyPath: _movingSpeed
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3560376707908448508, guid: 2d4fbfbbccc0cc54eb78b39fa6d6d810, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
+      objectReference: {fileID: 0}
     - target: {fileID: 5628913810420130441, guid: 2d4fbfbbccc0cc54eb78b39fa6d6d810, type: 3}
       propertyPath: m_Name
       value: SpearWeapon_Variant
@@ -3295,6 +3303,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 40712117431531553, guid: 85525148ff09fbd4e8785cd39a59b4e6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 1.05
+      objectReference: {fileID: 0}
     - target: {fileID: 1352147591589471641, guid: 85525148ff09fbd4e8785cd39a59b4e6, type: 3}
       propertyPath: m_FlipX
       value: 0
