@@ -56,13 +56,18 @@ public class PlayerMovement : MonoBehaviour
     {
         if (IsGrounded())
         {
+            _currentJumps = 0;
+            _canAirDodge = false;
             Run();
             if (_movementInput.x == 0)
             {
                 Desslerate();
             }
         }
-        SetGravirty();
+        CheckFall();
+
+        if(_canAirDodge && _movementInput.y<0)
+            SetGravity(_dogeGravity);
     }
 
     void Run()
@@ -79,11 +84,13 @@ public class PlayerMovement : MonoBehaviour
                 _playerBody.velocity = new Vector2(-_maxSpeed, _playerBody.velocity.y);
         }
     }
+
     void Jump()
     {
         if (_currentJumps < _numOfjumps)
         {
             _currentJumps++;
+            _playerBody.gravityScale = _normalGravity;
             _playerBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }
     }
@@ -96,21 +103,32 @@ public class PlayerMovement : MonoBehaviour
             _playerBody.AddForce(Vector2.right * _disselerationForce);
     }
 
-    void SetGravirty()
+    void CheckFall()
     {
         if (_playerBody.velocity.y < 0)
-            _playerBody.gravityScale = _fallGravity;
+        {
+            SetGravity(_fallGravity);
+            AirTimer();
+        }
         else
-            _playerBody.gravityScale = _normalGravity;
+            SetGravity(_normalGravity);
+    }
+
+    void SetGravity(float gravity)
+    {
+        _playerBody.gravityScale = gravity;
     }
 
     void AirTimer()
     {
-        _currentTime += Time.deltaTime;
-        if (_currentTime >= _fastFallStartTimer)
+        if (_canAirDodge == false)
         {
-            _currentTime = 0;
-            _canAirDodge = true;
+            _currentTime += Time.deltaTime;
+            if (_currentTime >= _fastFallStartTimer)
+            {
+                _currentTime = 0;
+                _canAirDodge = true;
+            }
         }
     }
 
