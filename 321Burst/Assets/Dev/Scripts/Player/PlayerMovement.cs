@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Run")]
     [SerializeField] float _maxSpeed;
     [SerializeField] float _runForce;
+    [SerializeField] float _disselerationForce;
 
     [Header("Jump")]
     [SerializeField] int _numOfjumps;
@@ -24,6 +25,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float _normalGravity;
     [SerializeField] float _fallGravity;
 
+    [Header("CheckFloor")]
+    [SerializeField] Transform _checkFloor;
+    [SerializeField] float _radius;
+    [SerializeField] LayerMask _groundLayer;
+
 
     private int _currentJumps;
     private float _currentTime;
@@ -32,7 +38,7 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 _moveDir;
 
     private bool _canAirDodge;
-    private bool _isAir;
+    [SerializeField] private bool _isGrounded;
 
     private void Start()
     {
@@ -43,23 +49,25 @@ public class PlayerMovement : MonoBehaviour
     {
         _movementInput = InputManager.Instance.MovmentInput;
         Move();
-        SetGravirty();
+        Debug.Log(_playerBody.velocity.x);
     }
-
 
     private void Move()
     {
-        Run();
-        IsGrounded();
-    }
-
-    void Jump()
-    {
-        if (_currentJumps < _numOfjumps)
+        if (IsGrounded())
         {
-            _currentJumps++;
-            _playerBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            _currentJumps = 0;
+            _canAirDodge = false;
+            Run();
+            if (_movementInput.x == 0)
+            {
+                Desslerate();
+            }
         }
+        CheckFall();
+
+        if(_canAirDodge && _movementInput.y<0)
+            SetGravity(_dogeGravity);
     }
 
     void Run()
@@ -67,32 +75,71 @@ public class PlayerMovement : MonoBehaviour
         _moveDir.x = _movementInput.x * _runForce;
         _playerBody.AddForce(_moveDir);
 
-        if (_playerBody.velocity.x >= _maxSpeed)
+        float dir = _playerBody.velocity.x;
+        if (Mathf.Abs(dir) >= _maxSpeed)
         {
-            _playerBody.velocity = new Vector2(_maxSpeed, _playerBody.velocity.y);
+            if (dir > 0)
+                _playerBody.velocity = new Vector2(_maxSpeed, _playerBody.velocity.y);
+            else if (dir < 0)
+                _playerBody.velocity = new Vector2(-_maxSpeed, _playerBody.velocity.y);
         }
     }
 
-    void SetGravirty()
+    void Jump()
+    {
+        if (_currentJumps < _numOfjumps)
+        {
+            _currentJumps++;
+            _playerBody.gravityScale = _normalGravity;
+            _playerBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+        }
+    }
+
+    void Desslerate()
+    {
+        if (_playerBody.velocity.x > 0)
+            _playerBody.AddForce(Vector2.left * _disselerationForce);
+        else if(_playerBody.velocity.x < 0)
+            _playerBody.AddForce(Vector2.right * _disselerationForce);
+    }
+
+    void CheckFall()
     {
         if (_playerBody.velocity.y < 0)
-            _playerBody.gravityScale = _fallGravity;
+        {
+            SetGravity(_fallGravity);
+            AirTimer();
+        }
         else
-            _playerBody.gravityScale = _normalGravity;
+            SetGravity(_normalGravity);
+    }
+
+    void SetGravity(float gravity)
+    {
+        _playerBody.gravityScale = gravity;
     }
 
     void AirTimer()
     {
-        _currentTime += Time.deltaTime;
-        if (_currentTime >= _fastFallStartTimer)
+        if (_canAirDodge == false)
         {
-            _currentTime = 0;
-            _canAirDodge = true;
+            _currentTime += Time.deltaTime;
+            if (_currentTime >= _fastFallStartTimer)
+            {
+                _currentTime = 0;
+                _canAirDodge = true;
+            }
         }
     }
 
-    void IsGrounded()
+    bool IsGrounded()
     {
+        Collider2D collider= Physics2D.OverlapCircle(_checkFloor.transform.position, _radius, _groundLayer);
+        if (collider != null)
+            _isGrounded = true;
+        else
+            _isGrounded = false;
 
+        return _isGrounded;
     }
 }
