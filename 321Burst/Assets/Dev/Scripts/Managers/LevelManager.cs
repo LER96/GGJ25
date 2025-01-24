@@ -12,7 +12,16 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<PlayerHanlder> _players;
     [SerializeField] private CinemachineTargetGroup _targetGroup;
 
+
     [SerializeField] private int _targetPlayerAmount = 2;
+
+    [Header("Round Rules")]
+    [SerializeField] float _roundLength = 180f;
+
+    float _currentTime = 0f;
+    bool _gameStart = false;
+    bool _roundStart = false;
+    bool _roundTimerEnded = false;
 
     private void Awake()
     {
@@ -20,12 +29,44 @@ public class LevelManager : MonoBehaviour
             _instance = this;
     }
 
+    private void Update()
+    {
+        if (!_gameStart)
+            return;
+
+        if (!_roundStart)
+            return;
+
+        if (_roundTimerEnded)
+        {
+            //something, end game or something
+            print("round timer ended");
+        }
+        else
+        {
+            _currentTime += Time.deltaTime;
+        }
+        CheckRoundTimerEnded();
+
+    }
+
+    public void AddToCameraTargetGroup(Transform targetTransform)
+    {
+        _targetGroup.AddMember(targetTransform, 1, 1);
+    }
+
+    public void RemoveFromCameraTargetGroup(Transform targetTransform)
+    {
+        _targetGroup.RemoveMember(targetTransform);
+    }
+
     public void AddPlayer(PlayerHanlder player)
     {
         _players.Add(player);
+        _targetGroup.AddMember(player.transform, 1, 1);
         if (AllPlayersConnected())
         {
-            //start countdown
+            StartGame();
         }
     }
 
@@ -34,4 +75,30 @@ public class LevelManager : MonoBehaviour
         return _players.Count == _targetPlayerAmount;
     }
 
+    public void StartGame()
+    {
+        _gameStart = true;
+        UIManager.Instance.StartGameCountdownCoroutine();
+    }
+
+    public void StartRound()
+    {
+        _roundStart = true;
+    }
+
+    public void CheckRoundTimerEnded()
+    {
+        if(_currentTime > _roundLength)
+        {
+            _roundTimerEnded = true;
+        }
+    }
+
+    public void ResetRoundStats()
+    {
+        _currentTime = 0f;
+        _gameStart = false;
+        _roundStart = false;
+        _roundTimerEnded = false;
+    }
 }
