@@ -309,7 +309,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7825355380161106993, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: managedReferences[642373729755070467].UpdateTrigger
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7825355380161106993, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: managedReferences[642373729755070467].DisplayColor.a
@@ -449,7 +449,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7825355380161106993, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: managedReferences[642373729755070467].TriggerParameterName
-      value: 
+      value: Normal
       objectReference: {fileID: 0}
     - target: {fileID: 7825355380161106993, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: managedReferences[642373729755070467].Timing.LimitPlayCount
