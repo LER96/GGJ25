@@ -5,27 +5,27 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
-    [SerializeField] float _movingSpeed;
-    [SerializeField] MMF_Player _attackFeedback;
-    [SerializeField] MMF_Player _hitFeedback;
-    [SerializeField] MMF_Player _pickUpFeedBack;
+    [SerializeField] protected float _movingSpeed;
+    [SerializeField] protected MMF_Player _attackFeedback;
+    [SerializeField] protected MMF_Player _hitFeedback;
+    [SerializeField] protected MMF_Player _pickUpFeedBack;
 
-    private WeaponHandler _weaponHandler;
-    private Collider2D _target;
-    private bool _isPicked;
+    protected Vector3 _startScale;
+    protected WeaponHandler _weaponHandler;
+    protected Collider2D _target;
+    protected bool _isPicked;
 
-    private void Update()
+    protected virtual void Start()
     {
-        if (_weaponHandler != null && _isPicked)
-        {
-            Vector3 scale = _weaponHandler.Holder.localScale;
-            Vector3 localScale = transform.localScale;
-            transform.position = Vector3.Slerp(transform.position, _weaponHandler.Holder.position, _movingSpeed * Time.deltaTime);
-            transform.localScale = new Vector3(localScale.x * scale.x, localScale.y, localScale.z);
-        }
+        _startScale = transform.localScale;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    protected virtual void Update()
+    {
+        SetFatherBehavior();
+    }
+
+    protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.CompareTag("Player") && _isPicked == false)
         {
@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
+    protected virtual void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && _isPicked==false)
         {
@@ -45,7 +45,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void PickOrDrop()
+    protected virtual void PickOrDrop()
     {
         if(!_isPicked && _target!=null)
         {
@@ -62,7 +62,7 @@ public class Weapon : MonoBehaviour
         }
     }
 
-    void Pick()
+    protected virtual void Pick()
     {
         _weaponHandler.SetWeapon(this);
         _isPicked = true;
@@ -70,7 +70,7 @@ public class Weapon : MonoBehaviour
         _weaponHandler.AttackEvent += Attack;
     }
 
-    void Drop()
+    protected virtual void Drop()
     {
         _weaponHandler.DisableWeapon();
         transform.SetParent(null);
@@ -79,13 +79,26 @@ public class Weapon : MonoBehaviour
         _isPicked=false;
     }
 
-    public void Attack()
+    public virtual void Attack()
     {
         _attackFeedback.PlayFeedbacks();
     }
 
-    public void HitFeedBack()
+    public virtual void HitFeedBack()
     {
         _hitFeedback.PlayFeedbacks();
+    }
+
+    protected virtual void SetFatherBehavior()
+    {
+        if (_weaponHandler != null && _isPicked)
+        {
+            transform.position = Vector3.Slerp(transform.position, _weaponHandler.Holder.position, _movingSpeed * Time.deltaTime);
+
+            if (_weaponHandler.transform.localScale.x < 0)
+                transform.localScale = new Vector3(-_startScale.x, _startScale.y, _startScale.z);
+            else if (_weaponHandler.transform.localScale.x > 0)
+                transform.localScale = new Vector3(_startScale.x, _startScale.y, _startScale.z);
+        }
     }
 }

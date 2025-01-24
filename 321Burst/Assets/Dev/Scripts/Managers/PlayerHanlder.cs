@@ -1,3 +1,4 @@
+using MoreMountains.Feedbacks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,11 +10,14 @@ public class PlayerHanlder : MonoBehaviour
     public event Action JumpEvent;
 
     [SerializeField] int HP;
-
-    private Vector2 _movementInput;
+    [SerializeField] WeaponHandler _weaponHandler;
+    [SerializeField] PlayerMovement _playerMovement;
     private bool _jump;
-    private bool _attack;
-    private bool _pick;
+
+    private void Start()
+    {
+        LevelManager.Instance.AddPlayer(this);
+    }
 
     void OnJump(InputValue input)
     {
