@@ -11,6 +11,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Run")]
     [SerializeField] float _maxSpeed;
     [SerializeField] float _runForce;
+    [SerializeField] float _disselerationForce;
 
     [Header("Jump")]
     [SerializeField] int _numOfjumps;
@@ -23,6 +24,11 @@ public class PlayerMovement : MonoBehaviour
     [Header("Gravity")]
     [SerializeField] float _normalGravity;
     [SerializeField] float _fallGravity;
+
+    [Header("CheckFloor")]
+    [SerializeField] Transform _checkFloor;
+    [SerializeField] float _radius;
+    [SerializeField] LayerMask _groundLayer;
 
 
     private int _currentJumps;
@@ -43,16 +49,36 @@ public class PlayerMovement : MonoBehaviour
     {
         _movementInput = InputManager.Instance.MovmentInput;
         Move();
-        SetGravirty();
+        Debug.Log(_playerBody.velocity.x);
     }
-
 
     private void Move()
     {
-        Run();
-        IsGrounded();
+        if (IsGrounded())
+        {
+            Run();
+            if (_movementInput.x == 0)
+            {
+                Desslerate();
+            }
+        }
+        SetGravirty();
     }
 
+    void Run()
+    {
+        _moveDir.x = _movementInput.x * _runForce;
+        _playerBody.AddForce(_moveDir);
+
+        float dir = _playerBody.velocity.x;
+        if (Mathf.Abs(dir) >= _maxSpeed)
+        {
+            if (dir > 0)
+                _playerBody.velocity = new Vector2(_maxSpeed, _playerBody.velocity.y);
+            else if (dir < 0)
+                _playerBody.velocity = new Vector2(-_maxSpeed, _playerBody.velocity.y);
+        }
+    }
     void Jump()
     {
         if (_currentJumps < _numOfjumps)
@@ -62,15 +88,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void Run()
+    void Desslerate()
     {
-        _moveDir.x = _movementInput.x * _runForce;
-        _playerBody.AddForce(_moveDir);
-
-        if (_playerBody.velocity.x >= _maxSpeed)
-        {
-            _playerBody.velocity = new Vector2(_maxSpeed, _playerBody.velocity.y);
-        }
+        if (_playerBody.velocity.x > 0)
+            _playerBody.AddForce(Vector2.left * _disselerationForce);
+        else if(_playerBody.velocity.x < 0)
+            _playerBody.AddForce(Vector2.right * _disselerationForce);
     }
 
     void SetGravirty()
@@ -91,8 +114,14 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void IsGrounded()
+    bool IsGrounded()
     {
+        Collider2D collider= Physics2D.OverlapCircle(_checkFloor.transform.position, _radius, _groundLayer);
+        if (collider != null)
+            _isAir = false;
+        else
+            _isAir = true;
 
+        return _isAir;
     }
 }
