@@ -2,6 +2,7 @@ using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -40,20 +41,16 @@ public class PlayerMovement : MonoBehaviour
     private int _currentJumps;
     private float _currentTime;
 
-    [SerializeField] private Vector2 _movementInput;
+    private Vector2 _movementInput;
     private Vector2 _moveDir;
 
     private bool _canFastFall;
+    private bool _jump;
     [SerializeField] private bool _isGrounded;
 
-    private void Start()
-    {
-        InputManager.JumpEvent += Jump;
-    }
 
     private void FixedUpdate()
     {
-        _movementInput = InputManager.Instance.MovmentInput;
         Move();
         Debug.Log("player X vel: " + _playerBody.velocity.x + "\nplayer Y vel: " + _playerBody.velocity.y);
     }
@@ -119,11 +116,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        _playerBody.velocity = new Vector2(_playerBody.velocity.x, 0);
         if (_currentJumps < _numOfjumps)
         {
             _currentJumps++;
             _playerBody.gravityScale = _normalGravity;
+            _playerBody.velocity = new Vector2(_playerBody.velocity.x, 0);
             _playerBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
         }
     }
@@ -182,5 +179,20 @@ public class PlayerMovement : MonoBehaviour
             _isGrounded = false;
 
         return _isGrounded;
+    }
+
+    void OnMove(InputValue input)
+    {
+        _movementInput = input.Get<Vector2>();
+    }
+
+    public void OnJump(InputValue input)
+    {
+        if (input.isPressed && _jump == false)
+        {
+            Jump();
+        }
+
+        _jump = input.isPressed;
     }
 }
