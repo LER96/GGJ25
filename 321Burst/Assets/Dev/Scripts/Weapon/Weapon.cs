@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] protected WeaponAnimation _weaponAnimation;
+
     [SerializeField] protected string _weaponName;
     [SerializeField] protected float _movingSpeed;
     [SerializeField] protected float _attackDuration;
@@ -21,13 +23,13 @@ public class Weapon : MonoBehaviour
     protected Collider2D _target;
     protected Transform _spawnPoint;
     protected bool _isPicked;
-    protected bool _isAttacking = false;
+    [SerializeField] protected bool _isAttacking = false;
     protected float _cooldownTimer = 0f;
 
 
     protected bool _CooldownReady => _cooldownTimer <= 0f;
 
-    public string WeaponName=> _weaponName;
+    public string WeaponName => _weaponName;
     public PlayerHanlder Owner { get { return _owner; } }
     public Transform SpawnPoint => _spawnPoint;
 
@@ -53,6 +55,8 @@ public class Weapon : MonoBehaviour
         if (collision.CompareTag("Player") && _isPicked == false)
         {
             _weaponHandler = collision.GetComponent<WeaponHandler>();
+            if (_weaponAnimation != null)
+                _weaponAnimation.weaponHand = _weaponHandler;
             _target = collision;
             _weaponHandler.OnPick += PickOrDrop;
         }
@@ -63,6 +67,8 @@ public class Weapon : MonoBehaviour
         if (collision.CompareTag("Player") && _isPicked == false)
         {
             _weaponHandler = collision.GetComponent<WeaponHandler>();
+            if (_weaponAnimation != null)
+                _weaponAnimation.weaponHand = _weaponHandler;
             _target = null;
             _weaponHandler.OnPick -= PickOrDrop;
         }
@@ -119,7 +125,7 @@ public class Weapon : MonoBehaviour
 
     public void ForceDropWeapon()
     {
-        if(!_isPicked) return;
+        if (!_isPicked) return;
         Drop();
     }
     public virtual void Attack()
@@ -140,6 +146,7 @@ public class Weapon : MonoBehaviour
     {
         _attackFeedback.PlayFeedbacks();
         _isAttacking = false;
+        _weaponHandler.Player.PlayerMovement.CanMove = true;
     }
 
     public void SetAttack()

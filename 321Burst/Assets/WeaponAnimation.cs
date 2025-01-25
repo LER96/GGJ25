@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class WeaponAnimation : MonoBehaviour
 {
-    [SerializeField] WeaponHandler weaponHand;
+    public WeaponHandler weaponHand;
+
 
     public void Attack()
     {
