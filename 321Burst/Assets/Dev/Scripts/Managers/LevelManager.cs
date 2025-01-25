@@ -17,8 +17,9 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance => _instance;
 
     [SerializeField] private List<PlayerHanlder> _players;
-    [SerializeField] private List<SpawnPos> _startPos;
+    [SerializeField] private List<SpawnPos> _playerStartPositions;
     [SerializeField] private List<Transform> _weaponsSpots;
+    private Dictionary<Transform, bool> _spawnPointAvailability;
     [SerializeField] private List<Weapon> _weapons;
 
     [SerializeField] private CinemachineTargetGroup _targetGroup;
@@ -26,11 +27,17 @@ public class LevelManager : MonoBehaviour
 
     [Header("Round Rules")]
     [SerializeField] float _roundLength = 180f;
+    [Header("Weapon Rules")]
+    [SerializeField] int _amountOfStartingWeapons = 2;
+    [SerializeField] float _timePerWeaponSpawn = 10f;
+    [SerializeField] int _maxWeaponsOnBoard = 4;
 
     private float _currentTime = 0f;
+    private float _currentWeaponTimer = 0f;
     private bool _gameStart = false;
     private bool _roundStart = false;
     private bool _roundTimerEnded = false;
+    private int _currentWeaponIndex = 0;
 
     private void Awake()
     {
@@ -38,6 +45,11 @@ public class LevelManager : MonoBehaviour
             _instance = this;
 
         OnDeath += EndRound;
+    }
+
+    private void Start()
+    {
+        InitializeSpawnPoints();
     }
 
     private void Update()
@@ -59,6 +71,35 @@ public class LevelManager : MonoBehaviour
         }
         CheckRoundTimerEnded();
 
+        if (_currentWeaponTimer < _timePerWeaponSpawn)
+        {
+            _currentWeaponTimer += Time.deltaTime;
+        }
+        else
+        {
+            _currentWeaponTimer = 0f;
+
+            //check if should spawn weapon
+            int count = 0;
+            foreach (var sp in _spawnPointAvailability)
+            {
+                if (!sp.Value)
+                {
+                    count++;
+                }
+            }
+            if (count < _maxWeaponsOnBoard)
+                SpawnWeapons(1);
+        }
+    }
+
+    private void InitializeSpawnPoints()
+    {
+        _spawnPointAvailability = new Dictionary<Transform, bool>();
+        foreach (var spot in _weaponsSpots)
+        {
+            _spawnPointAvailability[spot] = true; // All spawn points are initially available
+        }
     }
 
     public void AddToCameraTargetGroup(Transform targetTransform)
@@ -84,22 +125,22 @@ public class LevelManager : MonoBehaviour
 
     void SetSpot(PlayerHanlder player)
     {
-        for (int i = 0; i < _startPos.Count; i++)
+        for (int i = 0; i < _playerStartPositions.Count; i++)
         {
-            if (_startPos[i]._isoccupied == false)
+            if (_playerStartPositions[i]._isoccupied == false)
             {
-                player.transform.position = _startPos[i]._spot.position;
-                _startPos[i]._isoccupied = true;
+                player.transform.position = _playerStartPositions[i]._spot.position;
+                _playerStartPositions[i]._isoccupied = true;
             }
         }
     }
 
     private void ResetSpot()
     {
-        for (int i = 0; i < _startPos.Count; i++)
+        for (int i = 0; i < _playerStartPositions.Count; i++)
         {
-            _startPos[i]._isoccupied = false;
-            _startPos[i]._spot = null;
+            _playerStartPositions[i]._isoccupied = false;
+            _playerStartPositions[i]._spot = null;
         }
     }
 
@@ -111,16 +152,75 @@ public class LevelManager : MonoBehaviour
     public void StartGame()
     {
         _gameStart = true;
-        SpawnWeapons();
+        _currentWeaponIndex = UnityEngine.Random.Range(0, _weapons.Count - 1);
+        SpawnWeapons(_amountOfStartingWeapons);
         UIManager.Instance.StartGameCountdownCoroutine();
     }
 
-    void SpawnWeapons()
+    void SpawnWeapons(int amountOfWeaponsToSpawn)
     {
-        for (int i = 0; i < _weapons.Count; i++)
+        // for each weapon, spawn in available spawn point, make spawn point used, set weapon spawn point
+
+        for (int i = 0; i < amountOfWeaponsToSpawn; i++)
         {
-            Weapon weapon= Instantiate(_weapons[i], _weaponsSpots[i]);
+            Transform spawnPoint = GetRandomAvailableWeaponSpawnPoint();
+            Weapon weapon = Instantiate(_weapons[_currentWeaponIndex], spawnPoint);
+            weapon.SetSpawnPoint(spawnPoint);
             StartCoroutine(Camera(weapon));
+
+            if (_currentWeaponIndex + 1 < _weapons.Count)
+                _currentWeaponIndex++;
+            else
+                _currentWeaponIndex = 0;
+        }
+    }
+
+    public Transform GetRandomAvailableWeaponSpawnPoint()
+    {
+        List<Transform> availableSpots = new List<Transform>();
+
+        foreach (var kvp in _spawnPointAvailability)
+        {
+            if (kvp.Value) // Check if the spawn point is available
+            {
+                availableSpots.Add(kvp.Key);
+            }
+        }
+
+        if (availableSpots.Count == 0)
+        {
+            Debug.LogWarning("No available spawn points!");
+            return null;
+        }
+
+        // Pick a random available spot
+        Transform randomSpot = availableSpots[UnityEngine.Random.Range(0, availableSpots.Count)];
+        MarkSpawnPointAsUsed(randomSpot);
+        return randomSpot;
+    }
+
+    public void MarkSpawnPointAsUsed(Transform spawnPoint)
+    {
+        if (_spawnPointAvailability.ContainsKey(spawnPoint))
+        {
+            _spawnPointAvailability[spawnPoint] = false;
+        }
+        else
+        {
+            Debug.LogWarning("Trying to mark an invalid spawn point as used.");
+        }
+    }
+
+    public void MarkSpawnPointAsAvailable(Transform spawnPoint)
+    {
+        if (_spawnPointAvailability.ContainsKey(spawnPoint))
+        {
+            _spawnPointAvailability[spawnPoint] = true;
+            Debug.Log($"{spawnPoint.name} is now available.");
+        }
+        else
+        {
+            Debug.LogWarning("Trying to mark an invalid spawn point as available.");
         }
     }
 
@@ -143,7 +243,7 @@ public class LevelManager : MonoBehaviour
     public void EndRound()
     {
         _roundStart = false;
-        for(int i = 0; i < _players.Count; i++)
+        for (int i = 0; i < _players.Count; i++)
         {
             if (_players[i].HP == 0)
             {
@@ -171,7 +271,7 @@ public class LevelManager : MonoBehaviour
 
     public void CheckRoundTimerEnded()
     {
-        if(_currentTime > _roundLength)
+        if (_currentTime > _roundLength)
         {
             _roundTimerEnded = true;
         }
