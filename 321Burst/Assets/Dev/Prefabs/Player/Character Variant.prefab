@@ -401,6 +401,10 @@ PrefabInstance:
       value: 0.05
       objectReference: {fileID: 0}
     - target: {fileID: 5283171040222288141, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+      propertyPath: _jumpVFX
+      value: 
+      objectReference: {fileID: 2504162008386758710}
+    - target: {fileID: 5283171040222288141, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
       propertyPath: _animator
       value: 
       objectReference: {fileID: 403106481187634441}
@@ -626,6 +630,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6da43522623d4704e979466dc7650b65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!198 &2504162008386758710 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4126850775843772064, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+  m_PrefabInstance: {fileID: 1983016492695649942}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &3470108238578033131 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3147272804748287869, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
