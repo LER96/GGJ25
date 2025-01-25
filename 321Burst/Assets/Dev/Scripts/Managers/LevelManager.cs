@@ -2,6 +2,7 @@ using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -21,6 +22,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<Transform> _weaponsSpots;
     private Dictionary<Transform, bool> _spawnPointAvailability;
     [SerializeField] private List<Weapon> _weapons;
+    [SerializeField] private List<Weapon> _spawnedWeapons;
 
     [SerializeField] private CinemachineTargetGroup _targetGroup;
     [SerializeField] private int _targetPlayerAmount = 2;
@@ -49,7 +51,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        InitializeSpawnPoints();
+        InitializeWeaponSpawnPoints();
     }
 
     private void Update()
@@ -93,7 +95,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    private void InitializeSpawnPoints()
+    private void InitializeWeaponSpawnPoints()
     {
         _spawnPointAvailability = new Dictionary<Transform, bool>();
         foreach (var spot in _weaponsSpots)
@@ -115,6 +117,7 @@ public class LevelManager : MonoBehaviour
     public void AddPlayer(PlayerHanlder player)
     {
         _players.Add(player);
+        UIManager.Instance.PlayerJoined(_players.Count);
         SetSpot(player);
         _targetGroup.AddMember(player.transform, 1, 1);
         if (AllPlayersConnected())
@@ -141,7 +144,6 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < _playerStartPositions.Count; i++)
         {
             _playerStartPositions[i]._isoccupied = false;
-            _playerStartPositions[i]._spot = null;
         }
     }
 
@@ -152,6 +154,13 @@ public class LevelManager : MonoBehaviour
 
     public void StartGame()
     {
+        foreach (var player in _players)
+        {
+            player.dead = false;
+            player.PlayerMovement.StopMovement();
+            player.PlayerMovement.PlayerAnimator.Play("PlayerIdle");
+        }
+
         _gameStart = true;
         _currentWeaponIndex = UnityEngine.Random.Range(0, _weapons.Count - 1);
         SpawnWeapons(_amountOfStartingWeapons);
@@ -167,6 +176,7 @@ public class LevelManager : MonoBehaviour
             Transform spawnPoint = GetRandomAvailableWeaponSpawnPoint();
             Weapon weapon = Instantiate(_weapons[_currentWeaponIndex], spawnPoint);
             weapon.SetSpawnPoint(spawnPoint);
+            _spawnedWeapons.Add(weapon);
             StartCoroutine(Camera(weapon));
 
             if (_currentWeaponIndex + 1 < _weapons.Count)
@@ -229,7 +239,8 @@ public class LevelManager : MonoBehaviour
     {
         AddToCameraTargetGroup(weapon.transform);
         yield return new WaitForSeconds(3);
-        RemoveFromCameraTargetGroup(weapon.transform);
+        if (weapon != null)
+            RemoveFromCameraTargetGroup(weapon.transform);
     }
 
     public void StartRound()
@@ -266,10 +277,28 @@ public class LevelManager : MonoBehaviour
     public void ResetRound()
     {
         ResetSpot();
-        //remove all weapons
+
+        foreach (var weapon in _spawnedWeapons)
+        {
+            weapon.ForceDropWeapon();
+            Destroy(weapon.gameObject);
+        }
+        _spawnedWeapons.Clear();
+
+        StartCoroutine(DelayRoundStart());
+
 
     }
 
+    IEnumerator DelayRoundStart()
+    {
+        yield return new WaitForSeconds(2f);
+        foreach (var player in _players)
+        {
+            SetSpot(player);
+        }
+        StartGame();
+    }
     public void CheckRoundTimerEnded()
     {
         if (_currentTime > _roundLength)

@@ -1151,7 +1151,11 @@ MonoBehaviour:
   _targetPlayerAmount: 2
   _roundLength: 180
   _amountOfStartingWeapons: 2
+<<<<<<< Updated upstream
   _timePerWeaponSpawn: 15
+=======
+  _timePerWeaponSpawn: 10
+>>>>>>> Stashed changes
   _maxWeaponsOnBoard: 3
 --- !u!1 &900644861
 GameObject:
