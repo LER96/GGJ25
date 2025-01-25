@@ -48,7 +48,7 @@ public class PlayerHanlder : MonoBehaviour
 
     public void SetAnimation(string name)
     {
-        _playerMovement.PlayAnimation(name);
+        _playerMovement.PlayerAnimator.Play(name);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
