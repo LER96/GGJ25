@@ -27,7 +27,10 @@ public class Spear : Weapon
             return;
         }
 
-        base.Attack();
+        _cooldownTimer = _attackCooldown;
+        _isAttacking = true;
+        _weaponHandler.Player.PlayerMovement.CanMove = false;
+        transform.position = _weaponHandler.Holder.position;
 
         _spearCollider.enabled = true;
         Vector3 targetPosition = FacingRight ? transform.position + Vector3.right * _attackDistance : transform.position + Vector3.left * _attackDistance;
