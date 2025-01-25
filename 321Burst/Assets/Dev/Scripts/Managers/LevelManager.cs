@@ -19,6 +19,9 @@ public class LevelManager : MonoBehaviour
     public static LevelManager Instance => _instance;
 
     [SerializeField] private List<PlayerHanlder> _players;
+    [SerializeField] private GameObject _hpbars;
+    [SerializeField] private List<GameObject> _player1Bar = new List<GameObject>();
+    [SerializeField] private List<GameObject> _player2Bar= new List<GameObject>();
     [SerializeField] private List<SpawnPos> _playerStartPositions;
     [SerializeField] private List<Transform> _weaponsSpots;
     private Dictionary<Transform, bool> _spawnPointAvailability;
@@ -54,6 +57,7 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        _hpbars.SetActive(false);
         InitializeWeaponSpawnPoints();
         _mainSound.PlayFeedbacks();
     }
@@ -160,6 +164,7 @@ public class LevelManager : MonoBehaviour
 
     public void StartGame()
     {
+        _hpbars.SetActive(true);
         foreach (var player in _players)
         {
             player.dead = false;
@@ -263,6 +268,9 @@ public class LevelManager : MonoBehaviour
         _roundStart = false;
         for (int i = 0; i < _players.Count; i++)
         {
+            SetBar(_player1Bar, _players[0].HP);
+            SetBar(_player2Bar, _players[1].HP);
+
             if (_players[i].HP == 0)
             {
                 EndGame(2 - i);
@@ -272,6 +280,19 @@ public class LevelManager : MonoBehaviour
 
         ResetRound();
         //reset round.
+    }
+
+    void SetBar(List<GameObject> bar, int hp)
+    {
+        for (int i = 0; i < bar.Count; i++)
+        {
+            if(i<hp)
+            {
+                bar[i].SetActive(true);
+            }
+            else
+                bar[i].SetActive(false);
+        }
     }
 
     public void EndGame(int winningPlayer)
