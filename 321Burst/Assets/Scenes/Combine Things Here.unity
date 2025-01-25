@@ -1204,7 +1204,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _players: []
-  _playerStartPositions: []
+  _playerStartPositions:
+  - _spot: {fileID: 408245955}
+    _isoccupied: 0
+  - _spot: {fileID: 414278301}
+    _isoccupied: 0
   _weaponsSpots:
   - {fileID: 243464260}
   - {fileID: 409921495}

@@ -131,6 +131,7 @@ public class LevelManager : MonoBehaviour
             {
                 player.transform.position = _playerStartPositions[i]._spot.position;
                 _playerStartPositions[i]._isoccupied = true;
+                return;
             }
         }
     }

@@ -121,6 +121,7 @@ public class Weapon : MonoBehaviour
 
         _cooldownTimer = _attackCooldown;
         _isAttacking = true;
+        _weaponHandler.Player.PlayerMovement.CanMove = false;
         transform.position = _weaponHandler.Holder.position;
         //_attackFeedback.PlayFeedbacks();
     }

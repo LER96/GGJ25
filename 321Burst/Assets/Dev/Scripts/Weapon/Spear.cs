@@ -50,6 +50,7 @@ public class Spear : Weapon
     void CompleteAttack()
     {
         _isAttacking = false;
+        _weaponHandler.Player.PlayerMovement.CanMove = true;
     }
 
 
