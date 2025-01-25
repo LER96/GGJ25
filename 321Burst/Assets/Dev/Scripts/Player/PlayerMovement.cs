@@ -136,7 +136,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Run()
     {
-        _animator.Play("Run");
+        //_animator.Play("Run");
+        _runFeedBack.PlayFeedbacks();
         _animator.SetBool("IsRunning", true);
         _moveDir.x = _movementInput.x * _groundAcceleration;
         _runFeedBack.PlayFeedbacks();
@@ -226,17 +227,24 @@ public class PlayerMovement : MonoBehaviour
             _playerBody.AddForce(Vector2.right * _airDecceleration);
     }
 
+    public void PlayAnimation(string name)
+    {
+        _animator.Play(name);
+    }
+
     void CheckFall()
     {
         if (_playerBody.velocity.y < 0)
         {
             _animator.SetBool("Down", true);
+            _animator.SetBool("Up", false);
             SetGravity(_fallGravity);
             AirTimer();
         }
         else
         {
             _animator.SetBool("Up", true);
+            _animator.SetBool("Down", false);
             SetGravity(_normalGravity);
         }
     }
