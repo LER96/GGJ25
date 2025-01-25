@@ -91,7 +91,7 @@ public class PlayerMovement : MonoBehaviour
             _currentJumps = 0;
             _canFastFall = false;
             Run();
-            if (_movementInput.x == 0)
+            if (_movementInput.x == 0 && Mathf.Abs(_playerBody.velocity.x) > 0.5f)
             {
                 GroundDeccelerate();
             }
@@ -125,6 +125,9 @@ public class PlayerMovement : MonoBehaviour
             else if (dir < 0)
                 _playerBody.velocity = new Vector2(-_groundMaxSpeed, _playerBody.velocity.y);
         }
+
+        if (_movementInput.x == 0 && Mathf.Abs(_playerBody.velocity.x) < 0.5f)
+            _playerBody.velocity = new Vector2(0, _playerBody.velocity.y);
     }
 
     void AirRun()

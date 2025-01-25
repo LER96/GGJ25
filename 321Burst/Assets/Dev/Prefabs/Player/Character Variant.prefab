@@ -171,7 +171,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f68333a639c98143b339fab017faeb3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hp: 0
+  _hp: 3
   _weaponHandler: {fileID: 5625427512297306575}
   _playerMovement: {fileID: 5968552565649565595}
   _deathFeedBack: {fileID: 1420991046268827171}
@@ -189,6 +189,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _currentWeapon: {fileID: 0}
   _holder: {fileID: 40712117431531553}
+  _playerHandler: {fileID: 981087204827858947}
 --- !u!114 &3816778555028428898
 MonoBehaviour:
   m_ObjectHideFlags: 0

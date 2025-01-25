@@ -97,7 +97,7 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(.7f);
         _countdownText.text = "BURST";
         yield return new WaitForSeconds(.7f);
-        _startCountdownUI.gameObject.SetActive(true);
+        _startCountdownUI.gameObject.SetActive(false);
         LevelManager.Instance.StartRound();
     }
 }

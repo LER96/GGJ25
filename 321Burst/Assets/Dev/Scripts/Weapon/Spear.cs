@@ -8,42 +8,49 @@ public class Spear : Weapon
     [Header("Attack Sequence")]
     [SerializeField] Transform _pos;
     [SerializeField] Collider2D _spearCollider;
+    [SerializeField] float _attackDistance = 12f;
     [SerializeField] float _attackDuration;
-    [SerializeField] float _waitDuration;
-    protected bool _goBack=true;
+    [SerializeField] float _colliderExtraDuration = 0.3f;
+    [SerializeField] float _returnDuration = 0.2f;
+
+    protected bool FacingRight => transform.localScale.x > 0;
     public override void Attack()
     {
-        if (_goBack)
+        if (_isAttacking)
         {
-            _goBack = false;
-            _spearCollider.enabled = true;
-            transform.DOMove(_pos.position, _attackDuration).OnComplete(ColliderDelay);
+            print("already mid attack");
+            return;
         }
+        if (!_CooldownReady)
+        {
+            print("cooldown not ready");
+            return;
+        }
+
+        base.Attack();
+
+        _spearCollider.enabled = true;
+        Vector3 targetPosition = FacingRight ? transform.position + Vector3.right * _attackDistance : transform.position + Vector3.left * _attackDistance;
+        transform.DOMove(targetPosition, _attackDuration).OnComplete(ColliderDelay);
     }
 
     void ColliderDelay()
     {
         StartCoroutine(ResetCollider());
-
     }
 
     IEnumerator ResetCollider()
     {
-        yield return new WaitForSeconds(_waitDuration);
+        yield return new WaitForSeconds(_colliderExtraDuration);
+        print("spear collider off");
         _spearCollider.enabled = false;
-        _goBack = true;
+        transform.DOMove(_weaponHandler.Holder.position, _returnDuration).OnComplete(CompleteAttack);
     }
 
-    protected override void SetFatherBehavior()
+    void CompleteAttack()
     {
-        if (_weaponHandler != null && _isPicked && _goBack)
-        {
-            transform.position = Vector3.Slerp(transform.position, _weaponHandler.Holder.position, _movingSpeed * Time.deltaTime);
-
-            if (_weaponHandler.transform.localScale.x < 0)
-                transform.localScale = new Vector3(-_startScale.x, _startScale.y, _startScale.z);
-            else if (_weaponHandler.transform.localScale.x > 0)
-                transform.localScale = new Vector3(_startScale.x, _startScale.y, _startScale.z);
-        }
+        _isAttacking = false;
     }
+
+
 }

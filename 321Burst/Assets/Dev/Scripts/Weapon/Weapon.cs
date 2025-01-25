@@ -6,14 +6,25 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     [SerializeField] protected float _movingSpeed;
+    [SerializeField] protected float _attackCooldown = 1.5f;
+    [SerializeField] protected LayerMask _layerMask;
+
     [SerializeField] protected MMF_Player _attackFeedback;
     [SerializeField] protected MMF_Player _hitFeedback;
     [SerializeField] protected MMF_Player _pickUpFeedBack;
 
+
     protected Vector3 _startScale;
     protected WeaponHandler _weaponHandler;
+    protected PlayerHanlder _owner;
     protected Collider2D _target;
     protected bool _isPicked;
+    protected bool _isAttacking = false;
+    protected float _cooldownTimer = 0f;
+
+    protected bool _CooldownReady => _cooldownTimer <= 0f;
+
+    public PlayerHanlder Owner { get { return _owner; } }
 
     protected virtual void Start()
     {
@@ -22,12 +33,19 @@ public class Weapon : MonoBehaviour
 
     protected virtual void Update()
     {
-        SetFatherBehavior();
+        if(_cooldownTimer > 0f)
+            _cooldownTimer -= Time.deltaTime;
+        
+        if (!_isAttacking)
+        {
+            SetFatherPosition();
+            SetFatherDirection();
+        }
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player") && _isPicked == false)
+        if (collision.CompareTag("Player") && _isPicked == false)
         {
             _weaponHandler = collision.GetComponent<WeaponHandler>();
             _target = collision;
@@ -37,7 +55,7 @@ public class Weapon : MonoBehaviour
 
     protected virtual void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && _isPicked==false)
+        if (collision.CompareTag("Player") && _isPicked == false)
         {
             _weaponHandler = collision.GetComponent<WeaponHandler>();
             _target = null;
@@ -47,7 +65,9 @@ public class Weapon : MonoBehaviour
 
     protected virtual void PickOrDrop()
     {
-        if(!_isPicked && _target!=null)
+        if (_isAttacking)
+            return;
+        if (!_isPicked && _target != null)
         {
             _weaponHandler = _target.GetComponent<WeaponHandler>();
             if (_weaponHandler != null)
@@ -56,8 +76,9 @@ public class Weapon : MonoBehaviour
                 _pickUpFeedBack.PlayFeedbacks();
             }
         }
-        else if(_isPicked) 
+        else if (_isPicked)
         {
+
             Drop();
         }
     }
@@ -65,6 +86,7 @@ public class Weapon : MonoBehaviour
     protected virtual void Pick()
     {
         _weaponHandler.SetWeapon(this);
+        _owner = _weaponHandler.Player;
         _isPicked = true;
         _pickUpFeedBack.PlayFeedbacks();
         _weaponHandler.AttackEvent += Attack;
@@ -72,16 +94,24 @@ public class Weapon : MonoBehaviour
 
     protected virtual void Drop()
     {
+        _owner = null;
         _weaponHandler.DisableWeapon();
         transform.SetParent(null);
         _weaponHandler.AttackEvent -= Attack;
         _weaponHandler = null;
-        _isPicked=false;
+        _isPicked = false;
     }
 
     public virtual void Attack()
     {
-        _attackFeedback.PlayFeedbacks();
+        if (_isAttacking) return; // prevent from attacking while mid attack
+        if (!_CooldownReady) return; // if attack is on cooldown, cancel attack
+
+
+        _cooldownTimer = _attackCooldown;
+        _isAttacking = true;
+        transform.position = _weaponHandler.Holder.position;
+        //_attackFeedback.PlayFeedbacks();
     }
 
     public virtual void HitFeedBack()
@@ -89,16 +119,23 @@ public class Weapon : MonoBehaviour
         _hitFeedback.PlayFeedbacks();
     }
 
-    protected virtual void SetFatherBehavior()
+    protected virtual void SetFatherPosition()
     {
         if (_weaponHandler != null && _isPicked)
         {
             transform.position = Vector3.Slerp(transform.position, _weaponHandler.Holder.position, _movingSpeed * Time.deltaTime);
+        }
+    }
 
+    protected virtual void SetFatherDirection()
+    {
+        if (_weaponHandler != null && _isPicked)
+        {
             if (_weaponHandler.transform.localScale.x < 0)
                 transform.localScale = new Vector3(-_startScale.x, _startScale.y, _startScale.z);
             else if (_weaponHandler.transform.localScale.x > 0)
                 transform.localScale = new Vector3(_startScale.x, _startScale.y, _startScale.z);
         }
     }
+
 }
