@@ -63,7 +63,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private bool _isGrounded;
 
     private bool _moveDelay;
-    private bool _canMove;
+    [SerializeField] private bool _canMove;
     private bool _inKnockback;
 
     public bool CanMove { get=> _canMove; set=> _canMove = value; }

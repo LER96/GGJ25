@@ -37,7 +37,7 @@ public class WeaponHandler : MonoBehaviour
     {
         _currentWeapon = null;
         _weaponOffset = Vector3.zero;
-        _holder.localPosition = Vector3.zero;
+        //_holder.localPosition = Vector3.zero;
     }
 
     void OnPickUp(InputValue input)
