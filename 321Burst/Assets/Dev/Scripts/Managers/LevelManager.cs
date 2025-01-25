@@ -122,6 +122,7 @@ public class LevelManager : MonoBehaviour
     public void AddPlayer(PlayerHanlder player)
     {
         _players.Add(player);
+        player.SetBubbleIndex(_players.Count - 1);
         UIManager.Instance.PlayerJoined(_players.Count);
         SetSpot(player);
         _targetGroup.AddMember(player.transform, 1, 1);

@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] MMF_Player _jumpFeedBack;
     [SerializeField] ParticleSystem _jumpVFX;
     [SerializeField] MMF_Player _midAirFallFeedBack;
+    [SerializeField] MMF_Player _doubleJumpFeedBack;
     [SerializeField] MMF_Player _landFeedback;
     [SerializeField] MMF_Player _runFeedBack;
     [SerializeField] MMF_Player _idleFeedBack;
@@ -136,8 +137,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Run()
     {
-        //_animator.Play("Run");
-        _runFeedBack.PlayFeedbacks();
+        _animator.Play("Run");
         _animator.SetBool("IsRunning", true);
         _moveDir.x = _movementInput.x * _groundAcceleration;
         _runFeedBack.PlayFeedbacks();
@@ -190,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 _animator.Play("DoubleJump");
+                _doubleJumpFeedBack.PlayFeedbacks();
                 Push();
             }
 
