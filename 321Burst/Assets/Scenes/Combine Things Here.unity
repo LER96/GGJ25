@@ -1502,11 +1502,12 @@ MonoBehaviour:
   - {fileID: 3446617423161774273, guid: ea5227e0789f6d54bac7364878b4f754, type: 3}
   _spawnedWeapons: []
   _targetGroup: {fileID: 1371783817}
-  _targetPlayerAmount: 2
+  _targetPlayerAmount: 1
   _roundLength: 180
   _amountOfStartingWeapons: 2
   _timePerWeaponSpawn: 10
   _maxWeaponsOnBoard: 4
+  _mainSound: {fileID: 1729056566}
 --- !u!1 &878500236
 GameObject:
   m_ObjectHideFlags: 0
@@ -3191,14 +3192,14 @@ MonoBehaviour:
         Chance: 100
         DisplayColor: {r: 0, g: 0, b: 0, a: 1}
         Timing:
-          TimescaleMode: 0
+          TimescaleMode: 1
           ExcludeFromHoldingPauses: 0
           ContributeToTotalDuration: 1
           InitialDelay: 0
           CooldownDuration: 0
           InterruptsOnStop: 1
           NumberOfRepeats: 0
-          RepeatForever: 0
+          RepeatForever: 1
           DelayBetweenRepeats: 1
           PlayCount: 0
           LimitPlayCount: 0
@@ -4064,6 +4065,10 @@ PrefabInstance:
     - target: {fileID: 180116310774636214, guid: ffb25f5f8beb93f4681394aefb0d3dc3, type: 3}
       propertyPath: m_Name
       value: CameraShake
+      objectReference: {fileID: 0}
+    - target: {fileID: 180116310774636214, guid: ffb25f5f8beb93f4681394aefb0d3dc3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2800621177009410675, guid: ffb25f5f8beb93f4681394aefb0d3dc3, type: 3}
       propertyPath: m_LocalPosition.x

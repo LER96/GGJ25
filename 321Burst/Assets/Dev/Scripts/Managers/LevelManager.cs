@@ -1,4 +1,5 @@
 using Cinemachine;
+using MoreMountains.Feedbacks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -41,6 +42,8 @@ public class LevelManager : MonoBehaviour
     private bool _roundTimerEnded = false;
     private int _currentWeaponIndex = 0;
 
+    [SerializeField] MMF_Player _mainSound;
+
     private void Awake()
     {
         if (_instance == null)
@@ -52,6 +55,7 @@ public class LevelManager : MonoBehaviour
     private void Start()
     {
         InitializeWeaponSpawnPoints();
+        _mainSound.PlayFeedbacks();
     }
 
     private void Update()
