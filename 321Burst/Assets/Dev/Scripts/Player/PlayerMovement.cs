@@ -217,12 +217,14 @@ public class PlayerMovement : MonoBehaviour
         if (_playerBody.velocity.y < 0)
         {
             _animator.SetBool("Down", true);
+            _animator.SetBool("Up", false);
             SetGravity(_fallGravity);
             AirTimer();
         }
         else
         {
             _animator.SetBool("Up", true);
+            _animator.SetBool("Down", false);
             SetGravity(_normalGravity);
         }
     }
@@ -303,6 +305,11 @@ public class PlayerMovement : MonoBehaviour
     {
         _playerBody.velocity = Vector2.zero;
         _playerBody.AddForce(direction * amount, ForceMode2D.Impulse);
+    }
+
+    public void PlayAnimation(string name)
+    {
+        _animator.Play(name);
     }
 
 }

@@ -42,6 +42,11 @@ public class PlayerHanlder : MonoBehaviour
         _jump = input.isPressed;
     }
 
+    public void SetAnimation(string name)
+    {
+        _playerMovement.PlayAnimation(name);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         

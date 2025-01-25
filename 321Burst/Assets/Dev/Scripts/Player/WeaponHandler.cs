@@ -19,6 +19,7 @@ public class WeaponHandler : MonoBehaviour
 
     public bool CanAttack { get => _canAttack; set => _canAttack = value; }
     public Transform Holder=> _holder;
+    public Weapon CurrentWeapon => _currentWeapon;
     public PlayerHanlder Player => _playerHandler;
 
     public Weapon GetWeapon()
