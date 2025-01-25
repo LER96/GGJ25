@@ -71,9 +71,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 8
   _animator: {fileID: 0}
+  _knockFeedBack: {fileID: 0}
   _jumpFeedBack: {fileID: 8926277930888284019}
   _jumpVFX: {fileID: 0}
   _midAirFallFeedBack: {fileID: 0}
+  _doubleJumpFeedBack: {fileID: 0}
   _landFeedback: {fileID: 0}
   _runFeedBack: {fileID: 372882669174471551}
   _idleFeedBack: {fileID: 3242090068005314393}
@@ -7599,6 +7601,10 @@ PrefabInstance:
     - target: {fileID: 5903778162085662408, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
       propertyPath: m_LocalScale.z
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6065894256694108851, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
+      propertyPath: m_SortingOrder
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6224330537606774276, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
       propertyPath: m_LocalPosition.x
