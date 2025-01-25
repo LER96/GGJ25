@@ -147,7 +147,7 @@ public class LevelManager : MonoBehaviour
         {
             if (_players[i].HP == 0)
             {
-                EndGame(i+1);
+                EndGame(2 - i);
                 return;
             }
         }

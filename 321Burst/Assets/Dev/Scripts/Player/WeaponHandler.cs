@@ -10,6 +10,7 @@ public class WeaponHandler : MonoBehaviour
     public event Action AttackEvent;
     [SerializeField] Weapon _currentWeapon;
     [SerializeField] Transform _holder;
+    [SerializeField] PlayerHanlder _playerHandler;
 
     private bool _pick;
     private bool _attackPress;
@@ -18,6 +19,7 @@ public class WeaponHandler : MonoBehaviour
 
     public bool CanAttack { get => _canAttack; set => _canAttack = value; }
     public Transform Holder=> _holder;
+    public PlayerHanlder Player => _playerHandler;
 
     public Weapon GetWeapon()
     {

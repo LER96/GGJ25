@@ -1,5 +1,6 @@
 using MoreMountains.Feedbacks;
 using System;
+using System.Buffers;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -43,10 +44,25 @@ public class PlayerHanlder : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Weapon"))
+        if(collision.transform.CompareTag("Weapon"))
         {
+            //check if owner is this
+            Weapon weapon = collision.GetComponentInParent<Weapon>();
+            if (weapon == null)
+                return;
+
+            if(weapon.Owner == null) return;
+
+            if (weapon.Owner == this)
+            {
+                print("hit by own spear");
+                return;
+            }
+
+            
             _deathFeedBack.PlayFeedbacks();
             _hp--;
+            LevelManager.Instance.EndRound();
         }
     }
 
