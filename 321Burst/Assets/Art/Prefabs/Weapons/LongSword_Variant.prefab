@@ -240,6 +240,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4751459517111737623, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
+      propertyPath: managedReferences[642373749653110798].Sfx
+      value: 
+      objectReference: {fileID: 8300000, guid: 1182595882abc72489de08ae9b773a2a, type: 3}
+    - target: {fileID: 4751459517111737623, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: managedReferences[642373729755070464].BoundAnimator
       value: 
       objectReference: {fileID: 4710242356925280461}
