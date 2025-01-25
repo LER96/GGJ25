@@ -83,7 +83,7 @@ public class LevelManager : MonoBehaviour
             int count = 0;
             foreach (var sp in _spawnPointAvailability)
             {
-                if (sp.Value)
+                if (!sp.Value)
                 {
                     count++;
                 }

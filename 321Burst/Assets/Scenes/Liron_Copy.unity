@@ -1000,7 +1000,7 @@ MonoBehaviour:
   - {fileID: 1095026159157005848, guid: 4ee9bb09c1741a347808b8772007418c, type: 3}
   - {fileID: 3446617423161774273, guid: ea5227e0789f6d54bac7364878b4f754, type: 3}
   _targetGroup: {fileID: 1371783817}
-  _targetPlayerAmount: 2
+  _targetPlayerAmount: 1
   _roundLength: 180
 --- !u!1 &900644861
 GameObject:
@@ -2419,13 +2419,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 935135792970763087, guid: 7b4edf2086698c34091c35485b1124a1, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2890104192125787697, guid: 7b4edf2086698c34091c35485b1124a1, type: 3}
       propertyPath: m_Name
       value: WhiteBoxMap
       objectReference: {fileID: 0}
+    - target: {fileID: 2890104192125787697, guid: 7b4edf2086698c34091c35485b1124a1, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 3455132843602434431, guid: 7b4edf2086698c34091c35485b1124a1, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.47
+      objectReference: {fileID: 0}
+    - target: {fileID: 7021688330983143820, guid: 7b4edf2086698c34091c35485b1124a1, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8354339121362364567, guid: 7b4edf2086698c34091c35485b1124a1, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 8540802977547857535, guid: 7b4edf2086698c34091c35485b1124a1, type: 3}
+      propertyPath: m_Layer
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
