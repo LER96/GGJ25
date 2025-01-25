@@ -79,13 +79,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-<<<<<<< Updated upstream
-=======
+
         if (_playerHandler.dead)
             return;
 
         CheckGround();
->>>>>>> Stashed changes
+
         if (_moveDelay == false)
             DisableMovementTimer();
     }
@@ -171,16 +170,13 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-<<<<<<< Updated upstream
         if (_playerHandler.dead)
             return;
 
         if(_isGrounded)
             _jumpFeedBack.PlayFeedbacks();
-=======
 
 
->>>>>>> Stashed changes
         if (_currentJumps < _numOfjumps)
         {
             _currentJumps++;
