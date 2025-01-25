@@ -117,8 +117,14 @@ public class Weapon : MonoBehaviour
         _isPicked = false;
     }
 
+    public void ForceDropWeapon()
+    {
+        if(!_isPicked) return;
+        Drop();
+    }
     public virtual void Attack()
     {
+        if (_weaponHandler.Player.dead) return;
         if (_isAttacking) return; // prevent from attacking while mid attack
         if (!_CooldownReady) return; // if attack is on cooldown, cancel attack
 

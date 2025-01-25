@@ -21,9 +21,13 @@ public class PlayerHanlder : MonoBehaviour
     public WeaponHandler WeaponHandler=> _weaponHandler;
     public PlayerMovement PlayerMovement => _playerMovement;
 
+
+    public bool dead = false;
+
     private void Start()
     {
         LevelManager.Instance.AddPlayer(this);
+        dead = false;
     }
 
     public void StartRound()
@@ -66,7 +70,8 @@ public class PlayerHanlder : MonoBehaviour
                 return;
             }
 
-            
+            PlayerMovement.StopMovement();
+            dead = true;
             _deathFeedBack.PlayFeedbacks();
             _hp--;
             LevelManager.Instance.EndRound();

@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
 
     public bool CanMove { get=> _canMove; set=> _canMove = value; }
     public float StopMovementTimer { get=> _delayMovement; set=> _delayMovement = value; }
-
+    public Animator PlayerAnimator => _animator;
     private void Start()
     {
         _playerHandler = GetComponent<PlayerHanlder>();
@@ -79,13 +79,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+
+        if (_playerHandler.dead)
+            return;
+
         CheckGround();
+
         if (_moveDelay == false)
             DisableMovementTimer();
     }
 
     private void FixedUpdate()
     {
+        if (_playerHandler.dead)
+            return;
+
         if (_inKnockback)
             return;
 
@@ -162,6 +170,12 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
+        if (_playerHandler.dead)
+            return;
+
+        if(_isGrounded)
+            _jumpFeedBack.PlayFeedbacks();
+
 
         if (_currentJumps < _numOfjumps)
         {
@@ -217,14 +231,12 @@ public class PlayerMovement : MonoBehaviour
         if (_playerBody.velocity.y < 0)
         {
             _animator.SetBool("Down", true);
-            _animator.SetBool("Up", false);
             SetGravity(_fallGravity);
             AirTimer();
         }
         else
         {
             _animator.SetBool("Up", true);
-            _animator.SetBool("Down", false);
             SetGravity(_normalGravity);
         }
     }
@@ -307,9 +319,9 @@ public class PlayerMovement : MonoBehaviour
         _playerBody.AddForce(direction * amount, ForceMode2D.Impulse);
     }
 
-    public void PlayAnimation(string name)
+    public void StopMovement()
     {
-        _animator.Play(name);
+        _playerBody.velocity = Vector2.zero;
     }
 
 }

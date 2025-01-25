@@ -1451,6 +1451,7 @@ MonoBehaviour:
   - {fileID: 5649774233765461473, guid: 2d4fbfbbccc0cc54eb78b39fa6d6d810, type: 3}
   - {fileID: 1095026159157005848, guid: 4ee9bb09c1741a347808b8772007418c, type: 3}
   - {fileID: 3446617423161774273, guid: ea5227e0789f6d54bac7364878b4f754, type: 3}
+  _spawnedWeapons: []
   _targetGroup: {fileID: 1371783817}
   _targetPlayerAmount: 2
   _roundLength: 180
@@ -3492,7 +3493,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &2015421345
 RectTransform:
   m_ObjectHideFlags: 0

@@ -577,6 +577,7 @@ MonoBehaviour:
   _weaponHandler: {fileID: 5625427512297306575}
   _playerMovement: {fileID: 5968552565649565595}
   _deathFeedBack: {fileID: 1420991046268827171}
+  dead: 0
 --- !u!114 &5625427512297306575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -763,4 +764,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fcbabe5b5b9dec4abaf0383020d9b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _knockbackAmount: 7.5
+  _knockbackAmount: 10
