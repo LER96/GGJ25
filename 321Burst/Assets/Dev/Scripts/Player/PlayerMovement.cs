@@ -59,6 +59,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _moveDelay;
     private bool _canMove;
+    private bool _inKnockback;
 
     public bool CanMove { get=> _canMove; set=> _canMove = value; }
     public float StopMovementTimer { get=> _delayMovement; set=> _delayMovement = value; }
@@ -79,6 +80,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (_inKnockback)
+            return;
+
         if (_canMove)
             Move();
     }
@@ -244,6 +248,12 @@ public class PlayerMovement : MonoBehaviour
             else
                 _idleFeedBack.PlayFeedbacks();
         }
+    }
+
+    public void Knockback(float amount, Vector2 direction)
+    {
+        _playerBody.velocity = Vector2.zero;
+        _playerBody.AddForce(direction * amount, ForceMode2D.Impulse);
     }
 
 }
