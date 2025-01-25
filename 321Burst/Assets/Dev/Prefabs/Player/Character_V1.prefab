@@ -70,6 +70,11 @@ MonoBehaviour:
   _groundLayer:
     serializedVersion: 2
     m_Bits: 8
+  _jumpFeedBack: {fileID: 8926277930888284019}
+  _runFeedBack: {fileID: 372882669174471551}
+  _idleFeedBack: {fileID: 3242090068005314393}
+  _fallDownFeedBack: {fileID: 3147272804748287869}
+  _landingFeedBack: {fileID: 5755655024290213748}
 --- !u!50 &2340368285829695777
 Rigidbody2D:
   serializedVersion: 4
@@ -365,7 +370,7 @@ MonoBehaviour:
         RandomTriggerMode: 0
         RandomTriggerParameterNames: []
         UpdateBool: 0
-        BoolParameterName: 
+        BoolParameterName: IsRunning
         BoolParameterValue: 1
         UpdateRandomBool: 0
         RandomBoolParameterValue: 1
