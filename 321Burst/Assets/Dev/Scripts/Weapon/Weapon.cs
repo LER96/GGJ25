@@ -5,7 +5,9 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [SerializeField] protected string _weaponName;
     [SerializeField] protected float _movingSpeed;
+    [SerializeField] protected float _attackDuration;
     [SerializeField] protected float _attackCooldown = 1.5f;
 
     [SerializeField] protected MMF_Player _attackFeedback;
@@ -22,8 +24,10 @@ public class Weapon : MonoBehaviour
     protected bool _isAttacking = false;
     protected float _cooldownTimer = 0f;
 
+
     protected bool _CooldownReady => _cooldownTimer <= 0f;
 
+    public string WeaponName=> _weaponName;
     public PlayerHanlder Owner { get { return _owner; } }
     public Transform SpawnPoint => _spawnPoint;
 
@@ -124,12 +128,23 @@ public class Weapon : MonoBehaviour
         if (_isAttacking) return; // prevent from attacking while mid attack
         if (!_CooldownReady) return; // if attack is on cooldown, cancel attack
 
-
+        _owner.SetAnimation(_weaponName);
         _cooldownTimer = _attackCooldown;
         _isAttacking = true;
         _weaponHandler.Player.PlayerMovement.CanMove = false;
         transform.position = _weaponHandler.Holder.position;
+        //_attackFeedback.PlayFeedbacks();
+    }
+
+    public virtual void PlayerAttack()
+    {
         _attackFeedback.PlayFeedbacks();
+        _isAttacking = false;
+    }
+
+    public void SetAttack()
+    {
+        _isAttacking = false;
     }
 
     public virtual void HitFeedBack()

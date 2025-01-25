@@ -117,7 +117,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1605970126075690748, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: _weaponName
-      value: bigSword
+      value: SlowAttack
       objectReference: {fileID: 0}
     - target: {fileID: 1605970126075690748, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: _movingSpeed
