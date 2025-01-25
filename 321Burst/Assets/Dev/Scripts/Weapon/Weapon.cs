@@ -7,7 +7,6 @@ public class Weapon : MonoBehaviour
 {
     [SerializeField] protected float _movingSpeed;
     [SerializeField] protected float _attackCooldown = 1.5f;
-    [SerializeField] protected LayerMask _layerMask;
 
     [SerializeField] protected MMF_Player _attackFeedback;
     [SerializeField] protected MMF_Player _hitFeedback;
@@ -18,6 +17,7 @@ public class Weapon : MonoBehaviour
     protected WeaponHandler _weaponHandler;
     protected PlayerHanlder _owner;
     protected Collider2D _target;
+    protected Transform _spawnPoint;
     protected bool _isPicked;
     protected bool _isAttacking = false;
     protected float _cooldownTimer = 0f;
@@ -25,6 +25,7 @@ public class Weapon : MonoBehaviour
     protected bool _CooldownReady => _cooldownTimer <= 0f;
 
     public PlayerHanlder Owner { get { return _owner; } }
+    public Transform SpawnPoint => _spawnPoint;
 
     protected virtual void Start()
     {
@@ -33,9 +34,9 @@ public class Weapon : MonoBehaviour
 
     protected virtual void Update()
     {
-        if(_cooldownTimer > 0f)
+        if (_cooldownTimer > 0f)
             _cooldownTimer -= Time.deltaTime;
-        
+
         if (!_isAttacking)
         {
             SetFatherPosition();
@@ -63,6 +64,11 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    public void SetSpawnPoint(Transform sp)
+    {
+        _spawnPoint = sp;
+    }
+
     protected virtual void PickOrDrop()
     {
         if (_isAttacking)
@@ -85,6 +91,11 @@ public class Weapon : MonoBehaviour
 
     protected virtual void Pick()
     {
+        if (_spawnPoint != null)
+        {
+            LevelManager.Instance.MarkSpawnPointAsAvailable(_spawnPoint);
+            _spawnPoint = null;
+        }
         _weaponHandler.SetWeapon(this);
         _owner = _weaponHandler.Player;
         _isPicked = true;
