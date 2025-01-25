@@ -171,7 +171,7 @@ public class LevelManager : MonoBehaviour
     void SpawnWeapons(int amountOfWeaponsToSpawn)
     {
         // for each weapon, spawn in available spawn point, make spawn point used, set weapon spawn point
-
+        CameraManager.Instance.Shake(0.3f);
         for (int i = 0; i < amountOfWeaponsToSpawn; i++)
         {
             Transform spawnPoint = GetRandomAvailableWeaponSpawnPoint();
