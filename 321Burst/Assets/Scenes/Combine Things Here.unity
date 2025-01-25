@@ -1448,7 +1448,7 @@ MonoBehaviour:
   - {fileID: 1095026159157005848, guid: 4ee9bb09c1741a347808b8772007418c, type: 3}
   - {fileID: 3446617423161774273, guid: ea5227e0789f6d54bac7364878b4f754, type: 3}
   _targetGroup: {fileID: 1371783817}
-  _targetPlayerAmount: 1
+  _targetPlayerAmount: 2
   _roundLength: 180
   _amountOfStartingWeapons: 2
   _timePerWeaponSpawn: 10
