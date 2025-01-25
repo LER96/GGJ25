@@ -147,11 +147,14 @@ public class PlayerMovement : MonoBehaviour
 
     void Jump()
     {
-        if(_isGrounded)
-            _jumpFeedBack.PlayFeedbacks();
+
         if (_currentJumps < _numOfjumps)
         {
             _currentJumps++;
+            if (_isGrounded)
+                _jumpFeedBack.PlayFeedbacks();
+            else
+
             SetGravity(_normalGravity);
             _playerBody.velocity = new Vector2(_playerBody.velocity.x, 0);
             _playerBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
