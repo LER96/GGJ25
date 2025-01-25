@@ -41,11 +41,13 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] MMF_Player _jumpFeedBack;
     [SerializeField] MMF_Player _runFeedBack;
     [SerializeField] MMF_Player _idleFeedBack;
+    [SerializeField] MMF_Player _fallDownFeedBack;
+    [SerializeField] MMF_Player _landingFeedBack;
     
     private float _delayMovement;
     private PlayerHanlder _playerHandler;
 
-    private int _currentJumps;
+    [SerializeField] private int _currentJumps;
     private float _currentTime;
     private float _currentDiableTime;
 
@@ -55,9 +57,9 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _canFastFall;
     private bool _jump;
-    private bool _isGrounded;
+    [SerializeField] private bool _isGrounded;
 
-    private bool _moveDelay;
+    private bool _inAttackDelay;
     private bool _canMove;
 
     public bool CanMove { get=> _canMove; set=> _canMove = value; }
@@ -73,19 +75,15 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (_moveDelay == false)
+        Debug.Log(_playerBody.velocity.y);
+        if (_inAttackDelay == false)
             DisableMovementTimer();
-    }
-
-    private void FixedUpdate()
-    {
         if (_canMove)
             Move();
     }
 
     private void Move()
     {
-        
         if (IsGrounded())
         {
             _currentJumps = 0;
@@ -98,6 +96,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
+            CheckFall();
             AirRun();
             if (_movementInput.x == 0 || _movementInput.x * _playerBody.velocity.x < 0)
             {
@@ -106,7 +105,6 @@ public class PlayerMovement : MonoBehaviour
         }
 
         
-        CheckFall();
 
         if (_canFastFall && _movementInput.y < 0)
             SetGravity(_fastFallGravity);
@@ -125,6 +123,7 @@ public class PlayerMovement : MonoBehaviour
             else if (dir < 0)
                 _playerBody.velocity = new Vector2(-_groundMaxSpeed, _playerBody.velocity.y);
         }
+        //_runFeedBack.PlayFeedbacks();
     }
 
     void AirRun()
@@ -162,7 +161,9 @@ public class PlayerMovement : MonoBehaviour
         else if (_playerBody.velocity.x < -0.1f)
             _playerBody.AddForce(Vector2.right * _groundDecceleration);
         else
+        {
             _playerBody.velocity = Vector2.zero;
+        }
     }
 
     void AirDeccelerate()
@@ -177,6 +178,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_playerBody.velocity.y < 0)
         {
+            _fallDownFeedBack.PlayFeedbacks();
             SetGravity(_fallGravity);
             AirTimer();
         }
@@ -208,29 +210,33 @@ public class PlayerMovement : MonoBehaviour
         if (_currentDiableTime >= _delayMovement)
         {
             _currentDiableTime = 0;
-            _moveDelay = true;
+            _inAttackDelay = true;
         }
     }    
 
     bool IsGrounded()
     {
+        bool copy = _isGrounded;
         Collider2D collider = Physics2D.OverlapCircle(_checkFloor.transform.position, _radius, _groundLayer);
         if (collider != null)
             _isGrounded = true;
         else
             _isGrounded = false;
 
+        if(copy==false && _isGrounded)
+            _landingFeedBack.PlayFeedbacks();
+
         return _isGrounded;
     }
 
     void DelayMovement()
     {
-        _moveDelay = false;
+        _inAttackDelay = false;
     }
 
     void OnMove(InputValue input)
     {
-        if (_moveDelay)
+        if (_inAttackDelay)
         {
             _movementInput = input.Get<Vector2>();
             _runFeedBack.PlayFeedbacks();
