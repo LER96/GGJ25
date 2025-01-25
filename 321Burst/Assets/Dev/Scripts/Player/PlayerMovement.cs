@@ -327,6 +327,7 @@ public class PlayerMovement : MonoBehaviour
     {
         _knockFeedBack.PlayFeedbacks();
         _playerBody.velocity = Vector2.zero;
+        _animator.Play("KnockBack");
         _playerBody.AddForce(direction * amount, ForceMode2D.Impulse);
     }
 
