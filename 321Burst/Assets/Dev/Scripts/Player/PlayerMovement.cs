@@ -38,9 +38,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] LayerMask _groundLayer;
 
     [Header("Effects")]
+    [SerializeField] Animator _animator;
     [SerializeField] MMF_Player _jumpFeedBack;
+    [SerializeField] ParticleSystem _jumpVFX;
+    [SerializeField] MMF_Player _midAirFallFeedBack;
+    [SerializeField] MMF_Player _landFeedback;
     [SerializeField] MMF_Player _runFeedBack;
     [SerializeField] MMF_Player _idleFeedBack;
+
     
     private float _delayMovement;
     private PlayerHanlder _playerHandler;
@@ -55,7 +60,7 @@ public class PlayerMovement : MonoBehaviour
 
     private bool _canFastFall;
     private bool _jump;
-    private bool _isGrounded;
+    [SerializeField] private bool _isGrounded;
 
     private bool _moveDelay;
     private bool _canMove;
@@ -99,36 +104,43 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        
-        if (IsGrounded())
+        if (_isGrounded)
         {
             _currentJumps = 0;
             _canFastFall = false;
-            Run();
             if (_movementInput.x == 0 && Mathf.Abs(_playerBody.velocity.x) > 0.5f)
             {
+                _animator.SetBool("IsRunning", false);
                 GroundDeccelerate();
             }
+            if (_movementInput.x != 0)
+                Run();
+
+            if (_movementInput.x == 0 && Mathf.Abs(_playerBody.velocity.x) < 0.5f)
+                _playerBody.velocity = new Vector2(0, _playerBody.velocity.y);
         }
         else
         {
+            _animator.SetBool("IsRunning", false);
+            CheckFall();
             AirRun();
             if (_movementInput.x == 0 || _movementInput.x * _playerBody.velocity.x < 0)
             {
                 AirDeccelerate();
             }
+
+            if (_canFastFall && _movementInput.y < 0)
+                SetGravity(_fastFallGravity);
         }
 
-        
-        CheckFall();
-
-        if (_canFastFall && _movementInput.y < 0)
-            SetGravity(_fastFallGravity);
     }
 
     void Run()
     {
+        _animator.Play("Run");
+        _animator.SetBool("IsRunning", true);
         _moveDir.x = _movementInput.x * _groundAcceleration;
+        _runFeedBack.PlayFeedbacks();
         _playerBody.AddForce(_moveDir);
 
         float dir = _playerBody.velocity.x;
@@ -140,8 +152,6 @@ public class PlayerMovement : MonoBehaviour
                 _playerBody.velocity = new Vector2(-_groundMaxSpeed, _playerBody.velocity.y);
         }
 
-        if (_movementInput.x == 0 && Mathf.Abs(_playerBody.velocity.x) < 0.5f)
-            _playerBody.velocity = new Vector2(0, _playerBody.velocity.y);
     }
 
     void AirRun()
@@ -162,21 +172,44 @@ public class PlayerMovement : MonoBehaviour
     void Jump()
     {
 <<<<<<< Updated upstream
+        if (_playerHandler.dead)
+            return;
+
         if(_isGrounded)
             _jumpFeedBack.PlayFeedbacks();
 =======
 
-        if (_playerHandler.dead)
-            return;
 
 >>>>>>> Stashed changes
         if (_currentJumps < _numOfjumps)
         {
             _currentJumps++;
-            SetGravity(_normalGravity);
-            _playerBody.velocity = new Vector2(_playerBody.velocity.x, 0);
-            _playerBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            if (_isGrounded)
+            {
+                _jumpVFX.Play();
+                _animator.Play("JumpAnticipation");
+                Push();
+            }
+            else
+            {
+                _animator.Play("DoubleJump");
+                Push();
+            }
+
         }
+    }
+
+    IEnumerator JumpAnticipation()
+    {
+        yield return new WaitForSeconds(0.3f);
+        Push();
+    }
+
+    void Push()
+    {
+        SetGravity(_normalGravity);
+        _playerBody.velocity = new Vector2(_playerBody.velocity.x, 0);
+        _playerBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
     }
 
     void GroundDeccelerate()
@@ -201,11 +234,15 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_playerBody.velocity.y < 0)
         {
+            _animator.SetBool("Down", true);
             SetGravity(_fallGravity);
             AirTimer();
         }
         else
+        {
+            _animator.SetBool("Up", true);
             SetGravity(_normalGravity);
+        }
     }
 
     void SetGravity(float gravity)
@@ -238,13 +275,26 @@ public class PlayerMovement : MonoBehaviour
 
     bool IsGrounded()
     {
-        Collider2D collider = Physics2D.OverlapCircle(_checkFloor.transform.position, _radius, _groundLayer);
-        if (collider != null)
+        return _isGrounded;
+    }
+
+    void CheckGround()
+    {
+        Collider2D[] co = Physics2D.OverlapCircleAll(_checkFloor.transform.position, _radius, _groundLayer);
+        Debug.Log(co.Length);
+        if (co.Length > 0)
+        {
+            if (_isGrounded == false)
+            {
+                _landFeedback.PlayFeedbacks();
+                _animator.Play("Landing");
+            }
             _isGrounded = true;
+            _animator.SetBool("Up", false);
+            _animator.SetBool("Down", false);
+        }
         else
             _isGrounded = false;
-
-        return _isGrounded;
     }
 
     void DelayMovement()
