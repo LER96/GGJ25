@@ -65,6 +65,7 @@ public class PlayerHanlder : MonoBehaviour
                 return;
             }
 
+            PlayerMovement.StopMovement();
             dead = true;
             _deathFeedBack.PlayFeedbacks();
             _hp--;

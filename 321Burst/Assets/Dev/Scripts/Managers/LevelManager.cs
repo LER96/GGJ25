@@ -104,6 +104,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+
     public void AddToCameraTargetGroup(Transform targetTransform)
     {
         _targetGroup.AddMember(targetTransform, 1, 1);
@@ -277,6 +278,7 @@ public class LevelManager : MonoBehaviour
     public void ResetRound()
     {
         ResetSpot();
+        InitializeWeaponSpawnPoints();
 
         foreach (var weapon in _spawnedWeapons)
         {
