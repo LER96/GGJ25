@@ -76,6 +76,7 @@ MonoBehaviour:
   _landFeedback: {fileID: 0}
   _runFeedBack: {fileID: 372882669174471551}
   _idleFeedBack: {fileID: 3242090068005314393}
+  _isGrounded: 0
 --- !u!50 &2340368285829695777
 Rigidbody2D:
   serializedVersion: 4
@@ -6717,6 +6718,18 @@ PrefabInstance:
     - target: {fileID: 2511944118089327523, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
       propertyPath: m_Layer
       value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5903778162085662408, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5903778162085662408, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5903778162085662408, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6224330537606774276, guid: 3166d25433e656944a555b36a2468e6d, type: 3}
       propertyPath: m_LocalPosition.x
