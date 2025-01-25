@@ -39,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Effects")]
     [SerializeField] Animator _animator;
+    [SerializeField] MMF_Player _knockFeedBack;
     [SerializeField] MMF_Player _jumpFeedBack;
     [SerializeField] ParticleSystem _jumpVFX;
     [SerializeField] MMF_Player _midAirFallFeedBack;
@@ -324,6 +325,7 @@ public class PlayerMovement : MonoBehaviour
 
     public void Knockback(float amount, Vector2 direction)
     {
+        _knockFeedBack.PlayFeedbacks();
         _playerBody.velocity = Vector2.zero;
         _playerBody.AddForce(direction * amount, ForceMode2D.Impulse);
     }
