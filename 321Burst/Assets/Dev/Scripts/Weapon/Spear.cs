@@ -9,7 +9,6 @@ public class Spear : Weapon
     [SerializeField] Transform _pos;
     [SerializeField] Collider2D _spearCollider;
     [SerializeField] float _attackDistance = 12f;
-    [SerializeField] float _attackDuration;
     [SerializeField] float _colliderExtraDuration = 0.3f;
     [SerializeField] float _returnDuration = 0.2f;
 
@@ -27,6 +26,11 @@ public class Spear : Weapon
             return;
         }
 
+        _owner.SetAnimation(_weaponName);
+    }
+
+    public override void PlayerAttack()
+    {
         _cooldownTimer = _attackCooldown;
         _isAttacking = true;
         _weaponHandler.Player.PlayerMovement.CanMove = false;

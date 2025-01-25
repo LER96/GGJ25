@@ -46,9 +46,13 @@ public class PlayerHanlder : MonoBehaviour
         _jump = input.isPressed;
     }
 
+    public void SetAnimation(string name)
+    {
+        _playerMovement.PlayAnimation(name);
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        
 
         if(collision.transform.CompareTag("Weapon"))
         {
@@ -64,7 +68,7 @@ public class PlayerHanlder : MonoBehaviour
                 print("hit by own spear");
                 return;
             }
-
+            CameraManager.Instance.Shake(.5f);
             PlayerMovement.StopMovement();
             dead = true;
             _deathFeedBack.PlayFeedbacks();

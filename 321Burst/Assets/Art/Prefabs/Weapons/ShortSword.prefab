@@ -120,6 +120,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f923f492e39cfb94abd73620e1fecdc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weaponHand: {fileID: 0}
 --- !u!1001 &1836304468374794468
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -130,7 +131,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1605970126075690748, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: _weaponName
-      value: sword
+      value: ShortAttack
       objectReference: {fileID: 0}
     - target: {fileID: 1605970126075690748, guid: a80f64341d22e2a4b94574ddaf9e81ae, type: 3}
       propertyPath: _movingSpeed
