@@ -123,7 +123,7 @@ public class Weapon : MonoBehaviour
         _isAttacking = true;
         _weaponHandler.Player.PlayerMovement.CanMove = false;
         transform.position = _weaponHandler.Holder.position;
-        //_attackFeedback.PlayFeedbacks();
+        _attackFeedback.PlayFeedbacks();
     }
 
     public virtual void HitFeedBack()

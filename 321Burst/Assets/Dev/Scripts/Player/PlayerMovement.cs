@@ -40,6 +40,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Effects")]
     [SerializeField] Animator _animator;
     [SerializeField] MMF_Player _jumpFeedBack;
+    [SerializeField] ParticleSystem _jumpVFX;
     [SerializeField] MMF_Player _midAirFallFeedBack;
     [SerializeField] MMF_Player _landFeedback;
     [SerializeField] MMF_Player _runFeedBack;
@@ -165,10 +166,11 @@ public class PlayerMovement : MonoBehaviour
         if (_currentJumps < _numOfjumps)
         {
             _currentJumps++;
-            if (_isGrounded && _movementInput.x==0)
+            if (_isGrounded)
             {
+                _jumpVFX.Play();
                 _animator.Play("JumpAnticipation");
-                StartCoroutine(JumpAnticipation());
+                Push();
             }
             else
             {
@@ -214,13 +216,13 @@ public class PlayerMovement : MonoBehaviour
     {
         if (_playerBody.velocity.y < 0)
         {
-            _animator.Play("JumpDown");
+            _animator.SetBool("Down", true);
             SetGravity(_fallGravity);
             AirTimer();
         }
         else
         {
-            _animator.Play("JumpUp");
+            _animator.SetBool("Up", true);
             SetGravity(_normalGravity);
         }
     }
@@ -270,6 +272,8 @@ public class PlayerMovement : MonoBehaviour
                 _animator.Play("Landing");
             }
             _isGrounded = true;
+            _animator.SetBool("Up", false);
+            _animator.SetBool("Down", false);
         }
         else
             _isGrounded = false;
