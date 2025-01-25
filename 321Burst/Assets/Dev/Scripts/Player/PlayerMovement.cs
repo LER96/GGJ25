@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] MMF_Player _jumpFeedBack;
     [SerializeField] ParticleSystem _jumpVFX;
     [SerializeField] MMF_Player _midAirFallFeedBack;
+    [SerializeField] MMF_Player _doubleJumpFeedBack;
     [SerializeField] MMF_Player _landFeedback;
     [SerializeField] MMF_Player _runFeedBack;
     [SerializeField] MMF_Player _idleFeedBack;
@@ -189,6 +190,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 _animator.Play("DoubleJump");
+                _doubleJumpFeedBack.PlayFeedbacks();
                 Push();
             }
 
@@ -226,17 +228,24 @@ public class PlayerMovement : MonoBehaviour
             _playerBody.AddForce(Vector2.right * _airDecceleration);
     }
 
+    public void PlayAnimation(string name)
+    {
+        _animator.Play(name);
+    }
+
     void CheckFall()
     {
         if (_playerBody.velocity.y < 0)
         {
             _animator.SetBool("Down", true);
+            _animator.SetBool("Up", false);
             SetGravity(_fallGravity);
             AirTimer();
         }
         else
         {
             _animator.SetBool("Up", true);
+            _animator.SetBool("Down", false);
             SetGravity(_normalGravity);
         }
     }

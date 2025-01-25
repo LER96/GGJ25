@@ -11,6 +11,8 @@ public class PlayerHanlder : MonoBehaviour
     public event Action JumpEvent;
 
     [SerializeField] int _hp;
+    [SerializeField] SpriteRenderer _bubbleRenderer;
+    [SerializeField] List<Sprite> _bubbleSprites;
     [SerializeField] WeaponHandler _weaponHandler;
     [SerializeField] PlayerMovement _playerMovement;
     [SerializeField] MMF_Player _deathFeedBack;
@@ -28,6 +30,11 @@ public class PlayerHanlder : MonoBehaviour
     {
         LevelManager.Instance.AddPlayer(this);
         dead = false;
+    }
+
+    public void SetBubbleIndex(int index)
+    {
+        _bubbleRenderer.sprite = _bubbleSprites[index];
     }
 
     public void StartRound()

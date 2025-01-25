@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: managedReferences[642373729755070475].UpdateTrigger
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1168438594542910124, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1951665621591787191, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
       propertyPath: m_LocalPosition.y
       value: -0.46
@@ -449,6 +453,10 @@ PrefabInstance:
       value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 5283171040222288141, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+      propertyPath: _doubleJumpFeedBack
+      value: 
+      objectReference: {fileID: 5345081555558182320}
+    - target: {fileID: 5283171040222288141, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
       propertyPath: _midAirFallFeedBack
       value: 
       objectReference: {fileID: 3470108238578033131}
@@ -509,11 +517,16 @@ PrefabInstance:
       value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 9202130028526524959, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9202130028526524959, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
       propertyPath: m_TagString
       value: PlayerBubble
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1168438594542910124, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 47835285817385190, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
@@ -545,6 +558,11 @@ Animator:
   m_CorrespondingSourceObject: {fileID: 2169901363600147359, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
   m_PrefabInstance: {fileID: 1983016492695649942}
   m_PrefabAsset: {fileID: 0}
+--- !u!212 &997695952329588464 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1611604566869950566, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+  m_PrefabInstance: {fileID: 1983016492695649942}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1420991046268827171 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 593711186508269749, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
@@ -574,6 +592,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hp: 3
+  _bubbleRenderer: {fileID: 997695952329588464}
+  _bubbleSprites:
+  - {fileID: -2068360953, guid: ba2ec9b94fbe95e4085362fd71358c86, type: 3}
+  - {fileID: -1974287044, guid: ba2ec9b94fbe95e4085362fd71358c86, type: 3}
   _weaponHandler: {fileID: 5625427512297306575}
   _playerMovement: {fileID: 5968552565649565595}
   _deathFeedBack: {fileID: 1420991046268827171}
@@ -653,6 +675,17 @@ MonoBehaviour:
 --- !u!114 &3997825666129732047 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3242090068005314393, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+  m_PrefabInstance: {fileID: 1983016492695649942}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6da43522623d4704e979466dc7650b65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5345081555558182320 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5884126243683881766, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
   m_PrefabInstance: {fileID: 1983016492695649942}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
