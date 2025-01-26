@@ -367,6 +367,10 @@ PrefabInstance:
       propertyPath: m_Size.y
       value: 2.2
       objectReference: {fileID: 0}
+    - target: {fileID: 2678661219358915958, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+      propertyPath: m_Offset.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3147272804748287869, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
       propertyPath: FeedbacksList.Array.size
       value: 0
@@ -787,6 +791,14 @@ PrefabInstance:
       propertyPath: _midAirFallFeedBack
       value: 
       objectReference: {fileID: 3470108238578033131}
+    - target: {fileID: 5283171040222288141, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+      propertyPath: _checkFloorRectangleSize.x
+      value: 1.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 5283171040222288141, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
+      propertyPath: _checkFloorRectangleSize.y
+      value: 0.05
+      objectReference: {fileID: 0}
     - target: {fileID: 5554963299629064007, guid: 395f6cbd695129447b3b49fab1741eba, type: 3}
       propertyPath: m_LocalScale.x
       value: 1

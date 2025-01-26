@@ -35,6 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("CheckFloor")]
     [SerializeField] Transform _checkFloor;
     [SerializeField] float _radius;
+    [SerializeField] Vector2 _checkFloorRectangleSize;
     [SerializeField] LayerMask _groundLayer;
 
     [Header("Effects")]
@@ -286,8 +287,7 @@ public class PlayerMovement : MonoBehaviour
 
     void CheckGround()
     {
-        Collider2D[] co = Physics2D.OverlapCircleAll(_checkFloor.transform.position, _radius, _groundLayer);
-        Debug.Log(co.Length);
+        Collider2D[] co = Physics2D.OverlapBoxAll(_checkFloor.position, _checkFloorRectangleSize, 0, _groundLayer);
         if (co.Length > 0)
         {
             if (_isGrounded == false)
@@ -334,6 +334,13 @@ public class PlayerMovement : MonoBehaviour
     public void StopMovement()
     {
         _playerBody.velocity = Vector2.zero;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireCube(_checkFloor.position, _checkFloorRectangleSize);
     }
 
 }
