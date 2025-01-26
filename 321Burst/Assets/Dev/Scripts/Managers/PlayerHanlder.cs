@@ -8,18 +8,20 @@ using UnityEngine.InputSystem;
 
 public class PlayerHanlder : MonoBehaviour
 {
+    public event Action JumpEvent;
+
     [SerializeField] int _hp;
     [SerializeField] SpriteRenderer _bubbleRenderer;
     [SerializeField] List<Sprite> _bubbleSprites;
     [SerializeField] WeaponHandler _weaponHandler;
-    [SerializeField] Movement _playerMovement;
+    [SerializeField] PlayerMovement _playerMovement;
     [SerializeField] MMF_Player _deathFeedBack;
     private bool _jump;
 
     public int HP => _hp;
 
     public WeaponHandler WeaponHandler=> _weaponHandler;
-    public Movement PlayerMovement => _playerMovement;
+    public PlayerMovement PlayerMovement => _playerMovement;
     public bool dead = false;
 
     private void Start()
@@ -37,6 +39,22 @@ public class PlayerHanlder : MonoBehaviour
     {
         _weaponHandler.CanAttack = true;
         _playerMovement.CanMove = true;
+    }
+
+    public void RoundReset()
+    {
+        _weaponHandler.CanAttack = false;
+        _playerMovement.CanMove = false;
+    }
+
+    void OnJump(InputValue input)
+    {
+        if (input.isPressed && _jump == false)
+        {
+            JumpEvent?.Invoke();
+        }
+
+        _jump = input.isPressed;
     }
 
     public void SetAnimation(string name)
@@ -62,13 +80,17 @@ public class PlayerHanlder : MonoBehaviour
                 return;
             }
             CameraManager.Instance.Shake(.5f);
-            PlayerMovement.StopMovement();
-            dead = true;
-            _deathFeedBack.PlayFeedbacks();
-            _hp--;
+
+            KillPlayer();
             LevelManager.Instance.EndRound();
         }
     }
 
-
+    public void KillPlayer()
+    {
+        PlayerMovement.StopMovement();
+        dead = true;
+        _deathFeedBack.PlayFeedbacks();
+        _hp--;
+    }
 }

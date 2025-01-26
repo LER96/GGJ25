@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,6 +12,7 @@ public class UIManager : MonoBehaviour
 
     [Header("Gameplay")]
     [SerializeField] private RectTransform _gameplayUI;
+    [SerializeField] private TextMeshProUGUI _countdownTimerText;
 
     [Header("Player Connect UI")]
     [SerializeField] private RectTransform _playerConnectUI;
@@ -29,6 +31,11 @@ public class UIManager : MonoBehaviour
     private void Awake()
     {
         _instance = this;
+    }
+
+    public void UpdateCountdownTimer(float timer)
+    {
+        _countdownTimerText.text = ((int)Math.Ceiling(timer)).ToString();
     }
 
     public void EnableWinScreen(int player)

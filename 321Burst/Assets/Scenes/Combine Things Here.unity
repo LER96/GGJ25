@@ -4317,7 +4317,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 994399043eaf70f49b5390bca578ec6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _gameplayUI: {fileID: 0}
+  _gameplayUI: {fileID: 2103595524}
+  _countdownTimerText: {fileID: 2067754574}
   _playerConnectUI: {fileID: 1706850078}
   _player1JoinedText: {fileID: 169219526}
   _player2JoinedText: {fileID: 1721328615}
@@ -4366,6 +4367,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8322878126714701946, guid: b11273abbefc48c428e5d514d25127b2, type: 3}
   m_PrefabInstance: {fileID: 2103595523}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2067754574 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6065457327057143292, guid: b11273abbefc48c428e5d514d25127b2, type: 3}
+  m_PrefabInstance: {fileID: 2103595523}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2087197712
 GameObject:
   m_ObjectHideFlags: 0

@@ -19,7 +19,7 @@ public class WeaponHandler : MonoBehaviour
 
     public bool CanAttack { get => _canAttack; set => _canAttack = value; }
     public Transform Holder=> _holder;
-    public Weapon CurrentWeapon => _currentWeapon;
+    public Weapon CurrentWeapon { get => _currentWeapon; set => _currentWeapon = value; }
     public PlayerHanlder Player => _playerHandler;
 
     public Action Attack => OnPick;
@@ -33,7 +33,6 @@ public class WeaponHandler : MonoBehaviour
     public void SetWeapon(Weapon weapon)
     {
         _currentWeapon = weapon;
-
     }
 
     public void DisableWeapon()

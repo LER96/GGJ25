@@ -33,7 +33,7 @@ public class Spear : Weapon
     {
         _cooldownTimer = _attackCooldown;
         _isAttacking = true;
-        _weaponHandler.Player.PlayerMovement.CanMove = false;
+        //_weaponHandler.Player.PlayerMovement.CanMove = false;
         transform.position = _weaponHandler.Holder.position;
 
         _spearCollider.enabled = true;
