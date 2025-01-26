@@ -22,8 +22,6 @@ public class PlayerHanlder : MonoBehaviour
 
     public WeaponHandler WeaponHandler=> _weaponHandler;
     public PlayerMovement PlayerMovement => _playerMovement;
-
-
     public bool dead = false;
 
     private void Start()

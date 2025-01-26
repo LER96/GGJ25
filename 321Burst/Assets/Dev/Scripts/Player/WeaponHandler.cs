@@ -44,7 +44,7 @@ public class WeaponHandler : MonoBehaviour
     {
         if (input.isPressed && _pick == false)
         {
-            OnPick.Invoke();
+            OnPick?.Invoke();
         }
 
         _pick = input.isPressed;
