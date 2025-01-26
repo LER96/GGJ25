@@ -318,6 +318,17 @@
                 },
                 {
                     "name": "",
+                    "id": "89acbc85-1876-4017-a34f-9e72dfc3e2e6",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "2497a36e-1072-4501-a18a-7d49227ad376",
                     "path": "<DualShockGamepad>/buttonNorth",
                     "interactions": "",

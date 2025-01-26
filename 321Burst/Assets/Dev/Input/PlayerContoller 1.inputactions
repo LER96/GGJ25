@@ -275,7 +275,7 @@
                 {
                     "name": "",
                     "id": "fae0afad-78c5-4c34-8e3d-892d4f7449e8",
-                    "path": "<Keyboard>/rightCtrl",
+                    "path": "<Keyboard>/rightShift",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyBoard_Arrow",
@@ -374,7 +374,7 @@
                 {
                     "name": "",
                     "id": "ed2f253d-2550-47bd-9bdd-f7d563865795",
-                    "path": "<Keyboard>/rightShift",
+                    "path": "<Keyboard>/rightCtrl",
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyBoard_Arrow",
