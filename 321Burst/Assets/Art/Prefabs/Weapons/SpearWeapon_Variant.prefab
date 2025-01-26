@@ -2450,7 +2450,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weaponAnimation: {fileID: 0}
   _weaponName: MediumAttack
-  _movingSpeed: 15
+  _movingSpeed: 10
   _attackDuration: 0.3
   _attackCooldown: 1.5
   _attackFeedback: {fileID: 0}
