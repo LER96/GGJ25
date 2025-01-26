@@ -28,7 +28,7 @@ public class PlayerHanlder : MonoBehaviour
     {
         LevelManager.Instance.AddPlayer(this);
         dead = false;
-    }
+    }    
 
     public void SetBubbleIndex(int index)
     {
