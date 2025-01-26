@@ -42,6 +42,8 @@ public class Weapon : MonoBehaviour
     {
         if (_cooldownTimer > 0f)
             _cooldownTimer -= Time.deltaTime;
+        else
+            _cooldownTimer = 0;
 
         if (!_isAttacking)
         {
@@ -94,7 +96,6 @@ public class Weapon : MonoBehaviour
         }
         else if (_isPicked)
         {
-
             Drop();
         }
     }
