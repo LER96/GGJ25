@@ -3967,6 +3967,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1879626410}
   - component: {fileID: 1879626411}
+  - component: {fileID: 1879626412}
   m_Layer: 0
   m_Name: InputManager
   m_TagString: Untagged
@@ -4004,7 +4005,7 @@ MonoBehaviour:
   m_NotificationBehavior: 0
   m_MaxPlayerCount: -1
   m_AllowJoining: 1
-  m_JoinBehavior: 0
+  m_JoinBehavior: 2
   m_PlayerJoinedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -4014,7 +4015,7 @@ MonoBehaviour:
   m_JoinAction:
     m_UseReference: 0
     m_Action:
-      m_Name: 
+      m_Name: Join
       m_Type: 0
       m_ExpectedControlType: 
       m_Id: 8fef614b-e6ee-4e2c-9d0b-1e436700110e
@@ -4022,8 +4023,8 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
       m_Flags: 0
-    m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 1958193986321686128, guid: 85525148ff09fbd4e8785cd39a59b4e6, type: 3}
+    m_Reference: {fileID: -257422651242119376, guid: 3b069daec22e46f449efae01adfd44ff, type: 3}
+  m_PlayerPrefab: {fileID: 1958193986321686128, guid: 82eb04382ba3d384c8f1ff6aaa463e40, type: 3}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0
   m_FixedNumberOfSplitScreens: -1
@@ -4033,6 +4034,19 @@ MonoBehaviour:
     y: 0
     width: 1
     height: 1
+--- !u!114 &1879626412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1879626409}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f7fb46473f64e514baccf5db58dc062b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerPrefab: {fileID: 1958193986321686128, guid: f27d100b4530d234aae0f9323ecb5719, type: 3}
 --- !u!1 &1920479230
 GameObject:
   m_ObjectHideFlags: 0
