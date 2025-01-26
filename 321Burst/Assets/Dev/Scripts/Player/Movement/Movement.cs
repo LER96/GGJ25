@@ -2,86 +2,84 @@ using MoreMountains.Feedbacks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class PlayerMovement : MonoBehaviour
+public class Movement : MonoBehaviour
 {
-    [SerializeField] Rigidbody2D _playerBody;
+    [SerializeField] protected Rigidbody2D _playerBody;
+    [SerializeField] protected PlayerHanlder _playerHandler;
 
     [Header("Movment Variables")]
     [Header("Ground Movement")]
-    [SerializeField] float _groundMaxSpeed;
-    [SerializeField] float _groundAcceleration;
-    [SerializeField] float _groundDecceleration;
+    [SerializeField] protected float _groundMaxSpeed;
+    [SerializeField] protected float _groundAcceleration;
+    [SerializeField] protected float _groundDecceleration;
 
     [Header("Air Movement")]
-    [SerializeField] float _airMaxSpeed;
-    [SerializeField] float _airAcceleration;
-    [SerializeField] float _airDecceleration;
+    [SerializeField] protected float _airMaxSpeed;
+    [SerializeField] protected float _airAcceleration;
+    [SerializeField] protected float _airDecceleration;
 
     [Header("Jump")]
-    [SerializeField] int _numOfjumps;
-    [SerializeField] float _jumpForce;
-    [SerializeField] float _maxJumpSpeed;
+    [SerializeField] protected int _numOfjumps;
+    [SerializeField] protected float _jumpForce;
+    [SerializeField] protected float _maxJumpSpeed;
 
     [Header("FallForce")]
-    [SerializeField] float _fastFallGravity;
-    [SerializeField] float _fastFallStartTimer;
-
+    [SerializeField] protected float _fastFallGravity;
+    [SerializeField] protected float _fastFallStartTimer;
+                     
     [Header("Gravity")]
-    [SerializeField] float _normalGravity;
-    [SerializeField] float _fallGravity;
+    [SerializeField] protected float _normalGravity;
+    [SerializeField] protected float _fallGravity;
 
     [Header("CheckFloor")]
-    [SerializeField] Transform _checkFloor;
-    [SerializeField] float _radius;
-    [SerializeField] LayerMask _groundLayer;
+    [SerializeField] protected Transform _checkFloor;
+    [SerializeField] protected float _radius;
+    [SerializeField] protected LayerMask _groundLayer;
 
     [Header("Effects")]
-    [SerializeField] Animator _animator;
-    [SerializeField] MMF_Player _knockFeedBack;
-    [SerializeField] MMF_Player _jumpFeedBack;
-    [SerializeField] ParticleSystem _jumpVFX;
-    [SerializeField] MMF_Player _midAirFallFeedBack;
-    [SerializeField] MMF_Player _doubleJumpFeedBack;
-    [SerializeField] MMF_Player _landFeedback;
-    [SerializeField] MMF_Player _runFeedBack;
-    [SerializeField] MMF_Player _idleFeedBack;
+    [SerializeField] protected Animator _animator;
+    [SerializeField] protected MMF_Player _knockFeedBack;
+    [SerializeField] protected MMF_Player _jumpFeedBack;
+    [SerializeField] protected ParticleSystem _jumpVFX;
+    [SerializeField] protected MMF_Player _midAirFallFeedBack;
+    [SerializeField] protected MMF_Player _doubleJumpFeedBack;
+    [SerializeField] protected MMF_Player _landFeedback;
+    [SerializeField] protected MMF_Player _runFeedBack;
+    [SerializeField] protected MMF_Player _idleFeedBack;
 
-    
-    private float _delayMovement;
-    private PlayerHanlder _playerHandler;
 
-    private int _currentJumps;
-    private float _currentTime;
-    private float _currentDiableTime;
+    protected float _delayMovement;
+    protected int _currentJumps;
+    protected float _currentTime;
+    protected float _currentDiableTime;
 
-    private Vector2 _movementInput;
-    private Vector2 _moveDir;
-    private Vector3 _scale;
+    [SerializeField] protected Vector2 _movementInput;
+    protected Vector2 _moveDir;
+    protected Vector3 _scale;
 
-    private bool _canFastFall;
-    private bool _jump;
-    [SerializeField] private bool _isGrounded;
+    protected bool _canFastFall;
+    protected bool _jump;
+    [SerializeField] protected bool _isGrounded;
 
-    private bool _moveDelay;
-    [SerializeField] private bool _canMove;
-    private bool _inKnockback;
+    protected bool _moveDelay;
+    [SerializeField] protected bool _canMove;
+    protected bool _inKnockback;
 
-    public bool CanMove { get=> _canMove; set=> _canMove = value; }
-    public float StopMovementTimer { get=> _delayMovement; set=> _delayMovement = value; }
+    public bool CanMove { get => _canMove; set => _canMove = value; }
+    public float StopMovementTimer { get => _delayMovement; set => _delayMovement = value; }
     public Animator PlayerAnimator => _animator;
-    private void Start()
+
+
+    protected virtual void Start()
     {
-        _playerHandler = GetComponent<PlayerHanlder>();
         _scale = transform.localScale;
-        _playerHandler.JumpEvent += Jump;
+        //_playerHandler.JumpEvent += Jump;
         _playerHandler.WeaponHandler.AttackEvent += DelayMovement;
     }
 
-    private void Update()
+    protected virtual void Update()
     {
-
         if (_playerHandler.dead)
             return;
 
@@ -91,7 +89,7 @@ public class PlayerMovement : MonoBehaviour
             DisableMovementTimer();
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (_playerHandler.dead)
             return;
@@ -103,7 +101,7 @@ public class PlayerMovement : MonoBehaviour
             Move();
     }
 
-    private void Move()
+    protected virtual void Move()
     {
         if (_isGrounded)
         {
@@ -136,7 +134,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    void Run()
+    protected virtual void Run()
     {
         _animator.Play("Run");
         _animator.SetBool("IsRunning", true);
@@ -155,7 +153,7 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-    void AirRun()
+    protected virtual void AirRun()
     {
         _moveDir.x = _movementInput.x * _airAcceleration;
         _playerBody.AddForce(_moveDir);
@@ -170,12 +168,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void Jump()
+    protected virtual void Jump()
     {
         if (_playerHandler.dead)
             return;
 
-        if(_isGrounded)
+        if (_isGrounded)
             _jumpFeedBack.PlayFeedbacks();
 
 
@@ -198,20 +196,20 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    IEnumerator JumpAnticipation()
+    protected virtual IEnumerator JumpAnticipation()
     {
         yield return new WaitForSeconds(0.3f);
         Push();
     }
 
-    void Push()
+    protected virtual void Push()
     {
         SetGravity(_normalGravity);
         _playerBody.velocity = new Vector2(_playerBody.velocity.x, 0);
         _playerBody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
     }
 
-    void GroundDeccelerate()
+    protected virtual void GroundDeccelerate()
     {
         if (_playerBody.velocity.x > 0.1f)
             _playerBody.AddForce(Vector2.left * _groundDecceleration);
@@ -221,7 +219,7 @@ public class PlayerMovement : MonoBehaviour
             _playerBody.velocity = Vector2.zero;
     }
 
-    void AirDeccelerate()
+    protected virtual void AirDeccelerate()
     {
         if (_playerBody.velocity.x > 0)
             _playerBody.AddForce(Vector2.left * _airDecceleration);
@@ -229,12 +227,12 @@ public class PlayerMovement : MonoBehaviour
             _playerBody.AddForce(Vector2.right * _airDecceleration);
     }
 
-    public void PlayAnimation(string name)
+    public virtual void PlayAnimation(string name)
     {
         _animator.Play(name);
     }
 
-    void CheckFall()
+    protected virtual void CheckFall()
     {
         if (_playerBody.velocity.y < 0)
         {
@@ -251,12 +249,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void SetGravity(float gravity)
+    protected virtual void SetGravity(float gravity)
     {
         _playerBody.gravityScale = gravity;
     }
 
-    void AirTimer()
+    protected virtual void AirTimer()
     {
         if (_canFastFall == false)
         {
@@ -269,7 +267,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void DisableMovementTimer()
+    protected virtual void DisableMovementTimer()
     {
         _currentDiableTime += Time.deltaTime;
         if (_currentDiableTime >= _delayMovement)
@@ -277,14 +275,14 @@ public class PlayerMovement : MonoBehaviour
             _currentDiableTime = 0;
             _moveDelay = true;
         }
-    }    
+    }
 
-    bool IsGrounded()
+    protected bool IsGrounded()
     {
         return _isGrounded;
     }
 
-    void CheckGround()
+    protected virtual void CheckGround()
     {
         Collider2D[] co = Physics2D.OverlapCircleAll(_checkFloor.transform.position, _radius, _groundLayer);
         Debug.Log(co.Length);
@@ -303,27 +301,12 @@ public class PlayerMovement : MonoBehaviour
             _isGrounded = false;
     }
 
-    void DelayMovement()
+    protected virtual void DelayMovement()
     {
         _moveDelay = false;
     }
 
-    void OnMove(InputValue input)
-    {
-        if (_moveDelay)
-        {
-            _movementInput = input.Get<Vector2>();
-            _runFeedBack.PlayFeedbacks();
-            if (_movementInput.x < 0)
-                transform.localScale = new Vector3(-_scale.x, _scale.y, _scale.z);
-            else if (_movementInput.x > 0)
-                transform.localScale = new Vector3(_scale.x, _scale.y, _scale.z);
-            else
-                _idleFeedBack.PlayFeedbacks();
-        }
-    }
-
-    public void Knockback(float amount, Vector2 direction)
+    public virtual void Knockback(float amount, Vector2 direction)
     {
         _knockFeedBack.PlayFeedbacks();
         _playerBody.velocity = Vector2.zero;
@@ -331,9 +314,8 @@ public class PlayerMovement : MonoBehaviour
         _playerBody.AddForce(direction * amount, ForceMode2D.Impulse);
     }
 
-    public void StopMovement()
+    public virtual void StopMovement()
     {
         _playerBody.velocity = Vector2.zero;
     }
-
 }

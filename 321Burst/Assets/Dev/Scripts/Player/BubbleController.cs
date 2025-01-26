@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class BubbleController : MonoBehaviour
 {
-    PlayerMovement movement;
+    Movement movement;
     [SerializeField] float _knockbackAmount = 10f;
 
     private void Awake()
     {
-        movement = GetComponentInParent<PlayerMovement>();
+        movement = GetComponentInParent<PlayerNewInputMovement>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

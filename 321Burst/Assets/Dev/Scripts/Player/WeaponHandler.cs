@@ -22,6 +22,9 @@ public class WeaponHandler : MonoBehaviour
     public Weapon CurrentWeapon => _currentWeapon;
     public PlayerHanlder Player => _playerHandler;
 
+    public Action Attack => OnPick;
+    public Action Pick => OnPick;
+
     public Weapon GetWeapon()
     {
         return _currentWeapon;

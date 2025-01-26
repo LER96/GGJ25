@@ -24,7 +24,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<GameObject> _player2Bar= new List<GameObject>();
     [SerializeField] private List<SpawnPos> _playerStartPositions;
     [SerializeField] private List<Transform> _weaponsSpots;
-    private Dictionary<Transform, bool> _spawnPointAvailability;
+    private Dictionary<Transform, bool> _spawnPointAvailability= new Dictionary<Transform, bool>();
     [SerializeField] private List<Weapon> _weapons;
     [SerializeField] private List<Weapon> _spawnedWeapons;
 
