@@ -45,9 +45,10 @@ public class Weapon : MonoBehaviour
         else
             _cooldownTimer = 0;
 
+        SetFatherPosition();
+
         if (!_isAttacking)
         {
-            SetFatherPosition();
             SetFatherDirection();
         }
     }
@@ -127,6 +128,7 @@ public class Weapon : MonoBehaviour
     public void ForceDropWeapon()
     {
         if (!_isPicked) return;
+        _weaponHandler.OnPick -= PickOrDrop;
         Drop();
     }
     public virtual void Attack()
@@ -138,7 +140,7 @@ public class Weapon : MonoBehaviour
         _owner.SetAnimation(_weaponName);
         _cooldownTimer = _attackCooldown;
         _isAttacking = true;
-        _weaponHandler.Player.PlayerMovement.CanMove = false;
+        //_weaponHandler.Player.PlayerMovement.CanMove = false;
         transform.position = _weaponHandler.Holder.position;
         //_attackFeedback.PlayFeedbacks();
     }

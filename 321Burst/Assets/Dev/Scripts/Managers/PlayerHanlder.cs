@@ -41,6 +41,12 @@ public class PlayerHanlder : MonoBehaviour
         _playerMovement.CanMove = true;
     }
 
+    public void RoundReset()
+    {
+        _weaponHandler.CanAttack = false;
+        _playerMovement.CanMove = false;
+    }
+
     void OnJump(InputValue input)
     {
         if (input.isPressed && _jump == false)
@@ -74,13 +80,17 @@ public class PlayerHanlder : MonoBehaviour
                 return;
             }
             CameraManager.Instance.Shake(.5f);
-            PlayerMovement.StopMovement();
-            dead = true;
-            _deathFeedBack.PlayFeedbacks();
-            _hp--;
+
+            KillPlayer();
             LevelManager.Instance.EndRound();
         }
     }
 
-
+    public void KillPlayer()
+    {
+        PlayerMovement.StopMovement();
+        dead = true;
+        _deathFeedBack.PlayFeedbacks();
+        _hp--;
+    }
 }

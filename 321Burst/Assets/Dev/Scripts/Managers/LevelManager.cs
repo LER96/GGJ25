@@ -3,7 +3,6 @@ using MoreMountains.Feedbacks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour
@@ -21,7 +20,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] private List<PlayerHanlder> _players;
     [SerializeField] private GameObject _hpbars;
     [SerializeField] private List<GameObject> _player1Bar = new List<GameObject>();
-    [SerializeField] private List<GameObject> _player2Bar= new List<GameObject>();
+    [SerializeField] private List<GameObject> _player2Bar = new List<GameObject>();
     [SerializeField] private List<SpawnPos> _playerStartPositions;
     [SerializeField] private List<Transform> _weaponsSpots;
     private Dictionary<Transform, bool> _spawnPointAvailability;
@@ -60,6 +59,8 @@ public class LevelManager : MonoBehaviour
         _hpbars.SetActive(false);
         InitializeWeaponSpawnPoints();
         _mainSound.PlayFeedbacks();
+        _currentTime = _roundLength;
+        UIManager.Instance.UpdateCountdownTimer(_currentTime);
     }
 
     private void Update()
@@ -77,10 +78,16 @@ public class LevelManager : MonoBehaviour
         }
         else
         {
-            _currentTime += Time.deltaTime;
+            _currentTime -= Time.deltaTime;
+            UIManager.Instance.UpdateCountdownTimer(_currentTime);
         }
         CheckRoundTimerEnded();
 
+        HandleWeaponSpawning();
+    }
+
+    private void HandleWeaponSpawning()
+    {
         if (_currentWeaponTimer < _timePerWeaponSpawn)
         {
             _currentWeaponTimer += Time.deltaTime;
@@ -265,11 +272,13 @@ public class LevelManager : MonoBehaviour
 
     public void EndRound()
     {
+
         _roundStart = false;
         for (int i = 0; i < _players.Count; i++)
         {
             SetBar(_player1Bar, _players[0].HP);
-            SetBar(_player2Bar, _players[1].HP);
+            if (_players.Count > 1)
+                SetBar(_player2Bar, _players[1].HP);
 
             if (_players[i].HP == 0)
             {
@@ -286,7 +295,7 @@ public class LevelManager : MonoBehaviour
     {
         for (int i = 0; i < bar.Count; i++)
         {
-            if(i<hp)
+            if (i < hp)
             {
                 bar[i].SetActive(true);
             }
@@ -305,6 +314,7 @@ public class LevelManager : MonoBehaviour
     {
         ResetSpot();
         InitializeWeaponSpawnPoints();
+        ResetRoundStats();
 
         foreach (var weapon in _spawnedWeapons)
         {
@@ -312,6 +322,11 @@ public class LevelManager : MonoBehaviour
             Destroy(weapon.gameObject);
         }
         _spawnedWeapons.Clear();
+
+        foreach(var player in _players)
+        {
+            player.WeaponHandler.CurrentWeapon = null;
+        }
 
         StartCoroutine(DelayRoundStart());
 
@@ -324,20 +339,33 @@ public class LevelManager : MonoBehaviour
         foreach (var player in _players)
         {
             SetSpot(player);
+            player.RoundReset();
         }
         StartGame();
     }
     public void CheckRoundTimerEnded()
     {
-        if (_currentTime > _roundLength)
+        if (_currentTime <= 0)
         {
             _roundTimerEnded = true;
+            //kill players
+            KillPlayersAndEndRound();
         }
+    }
+
+    void KillPlayersAndEndRound()
+    {
+        foreach (var player in _players)
+        {
+            player.KillPlayer();
+        }
+
+        EndRound();
     }
 
     public void ResetRoundStats()
     {
-        _currentTime = 0f;
+        _currentTime = _roundLength;
         _gameStart = false;
         _roundStart = false;
         _roundTimerEnded = false;
