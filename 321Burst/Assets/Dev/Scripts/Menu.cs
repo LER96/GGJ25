@@ -5,8 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
-    public void PlayGame()
+    public void PlayGameControllers()
     {
         SceneManager.LoadScene(1);
+    }
+
+    public void PlayerGameSplitKeyBoard()
+    {
+        SceneManager.LoadScene(2);
     }
 }
